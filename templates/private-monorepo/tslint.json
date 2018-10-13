@@ -1,0 +1,3 @@
+{
+  "extends": ["@deftomat/opinionated/tslint.json"]
+}

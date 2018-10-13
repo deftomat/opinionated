@@ -1,0 +1,29 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "lib": ["es2017", "esnext.asynciterable"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "paths": {
+      "@<NAME>/*": ["packages/*"]
+    },
+    "preserveSymlinks": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "target": "esnext"
+  },
+  "exclude": [
+    "**/node_modules/",
+    "**/build/",
+    "**/coverage/",
+    "**/.serverless/",
+    "**/.build/"
+  ]
+}

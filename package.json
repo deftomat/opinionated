@@ -1,0 +1,31 @@
+{
+  "name": "@deftomat/opinionated",
+  "version": "0.1.2",
+  "description": "Opinionated config files for TypeScript project",
+  "license": "MIT",
+  "author": "Tomas Szabo <tomas.szabo@deftomat.com>",
+  "repository": "github:deftomat/opinionated",
+  "homepage": "https://github.com/deftomat/opinionated",
+  "keywords": [
+    "tslint",
+    "prettier",
+    "config",
+    "rules",
+    "typescript",
+    "lint-staged"
+  ],
+  "bin": {
+    "deftomat-opinionated": "./bin/init.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "tslint-consistent-codestyle": "^1.13.1",
+    "tslint-microsoft-contrib": "^5.0.3"
+  },
+  "peerDependencies": {
+    "husky": "^1.1.2",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.14.3",
+    "tslint": "^5.11.0"
+  }
+}
