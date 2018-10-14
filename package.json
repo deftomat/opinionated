@@ -1,6 +1,6 @@
 {
   "name": "@deftomat/opinionated",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Opinionated tooling for TypeScript projects",
   "license": "MIT",
   "author": "Tomas Szabo <tomas.szabo@deftomat.com>",
