@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const pkg = require(`${__dirname}/../package.json`);
 
 const [, , type, name] = process.argv;
 if (type == null) {
@@ -22,7 +23,11 @@ if (!fs.existsSync(source)) {
   process.exit();
 }
 
-const replace = [{ search: '<NAME>', replace: name }];
+const replace = [
+  { search: '<NAME>', replace: name },
+  { search: '<PKG_VERSION>', replace: pkg.version }
+];
+
 const target = `${process.cwd()}/${name}`;
 
 try {
