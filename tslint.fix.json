@@ -2,7 +2,6 @@
   "extends": ["./tslint.json"],
   "defaultSeverity": "error",
   "rules": {
-    "no-unused-variable": true,
     "ordered-imports": true
   },
   "jsRules": {
