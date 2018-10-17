@@ -1,6 +1,8 @@
-# 0.2.0
+# 0.2.2
 
-- first release
+- TSLint rules:
+  - Removed `strict-type-predicates` rule.
+  - Removed `ban-keywords` from `variable-name` rule.
 
 # 0.2.1
 
@@ -12,3 +14,7 @@
 - Removed deprecated TSLint rules:
 
   - `no-unused-variable`
+
+# 0.2.0
+
+- first release
