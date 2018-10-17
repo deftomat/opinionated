@@ -69,18 +69,11 @@
     "prefer-object-spread": true,
     "prefer-switch": [true, { "min-cases": 3 }],
     "prefer-template": [true, "allow-single-concat"],
-    "strict-type-predicates": true,
     "triple-equals": [true, "allow-null-check"],
     "unified-signatures": true,
     "use-default-type-parameter": true,
     "use-isnan": true,
-    "variable-name": [
-      true,
-      "allow-leading-underscore",
-      "allow-pascal-case",
-      "ban-keywords",
-      "check-format"
-    ]
+    "variable-name": [true, "allow-leading-underscore", "allow-pascal-case", "check-format"]
   },
   "jsRules": {
     "arrow-return-shorthand": true,
@@ -128,12 +121,6 @@
     "prefer-template": [true, "allow-single-concat"],
     "triple-equals": [true, "allow-null-check"],
     "use-isnan": true,
-    "variable-name": [
-      true,
-      "allow-leading-underscore",
-      "allow-pascal-case",
-      "ban-keywords",
-      "check-format"
-    ]
+    "variable-name": [true, "allow-leading-underscore", "allow-pascal-case", "check-format"]
   }
 }
