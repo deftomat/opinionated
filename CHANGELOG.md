@@ -1,3 +1,8 @@
+# 0.2.3
+
+- TSConfig:
+  - Added `"allowSyntheticDefaultImports": true`
+
 # 0.2.2
 
 - TSLint rules:
