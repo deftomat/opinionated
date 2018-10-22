@@ -1,24 +1,13 @@
 {
-  "compileOnSave": false,
+  "extends": "./node_modules/@deftomat/opinionated/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "react",
     "lib": ["es2017", "esnext.asynciterable"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noImplicitAny": false,
     "paths": {
       "@<NAME>/*": ["packages/*"]
     },
     "preserveSymlinks": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
     "target": "esnext"
   },
   "exclude": [
