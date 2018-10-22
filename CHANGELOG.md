@@ -1,3 +1,16 @@
+# 0.3.0
+
+- TSConfig:
+
+  - Added base config
+
+- TSLint:
+
+  - Added `object-literal-shorthand` rule
+
+- Monorepo:
+  - Added `wsrun` and example scripts object
+
 # 0.2.3
 
 - TSConfig:
