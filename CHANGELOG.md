@@ -1,3 +1,8 @@
+# 0.3.2
+
+- TSConfig
+  - Base config now contains only style related options.
+
 # 0.3.1
 
 - TSConfig
