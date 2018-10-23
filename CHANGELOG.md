@@ -1,3 +1,12 @@
+# 0.3.1
+
+- TSConfig
+
+  - Removed `jsx` option.
+
+- Monorepo:
+  - Show report after type-check
+
 # 0.3.0
 
 - TSConfig:
