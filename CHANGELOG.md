@@ -1,3 +1,9 @@
+# 0.3.4
+
+- TSLint
+  - Removed `no-unbound-method` rule.
+  - Removed `no-inferred-empty-object-type` rule.
+
 # 0.3.3
 
 - TSLint
