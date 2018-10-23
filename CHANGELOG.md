@@ -1,3 +1,8 @@
+# 0.3.3
+
+- TSLint
+  - Removed `array-type` rule.
+
 # 0.3.2
 
 - TSConfig
