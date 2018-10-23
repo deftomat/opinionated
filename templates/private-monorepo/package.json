@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "tsc": "wsrun --exclude-missing --fast-exit tsc",
-    "test": "wsrun --exclude-missing --collect-logs --report test"
+    "test": "wsrun --exclude-missing --collect-logs --report test",
+    "tsc": "wsrun --exclude-missing --fast-exit --report tsc"
   },
   "husky": {
     "hooks": {
