@@ -4,14 +4,10 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "pretty": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
     "strictPropertyInitialization": false
   }

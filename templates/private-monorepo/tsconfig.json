@@ -4,10 +4,14 @@
     "baseUrl": "./",
     "isolatedModules": true,
     "lib": ["es2017", "esnext.asynciterable"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "paths": {
       "@<NAME>/*": ["packages/*"]
     },
     "preserveSymlinks": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
     "target": "esnext"
   },
   "exclude": [
@@ -15,5 +19,5 @@
     "**/build/",
     "**/coverage/",
     "**/.serverless/"
-  ]
+  ],
 }
