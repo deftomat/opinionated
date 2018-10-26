@@ -1,3 +1,8 @@
+# 0.3.5
+
+- TSConfig
+  - Move `noEmit` from base config to templates.
+
 # 0.3.4
 
 - TSLint
