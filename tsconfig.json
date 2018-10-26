@@ -4,7 +4,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "pretty": true,
