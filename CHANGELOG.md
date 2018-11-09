@@ -1,3 +1,7 @@
+# 0.3.7
+
+- TSLint: fixed `node_modules` exclude option
+
 # 0.3.6
 
 - TSLint: exclude `node_modules`
