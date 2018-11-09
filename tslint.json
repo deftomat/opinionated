@@ -4,6 +4,9 @@
     "tslint-microsoft-contrib",
     "tslint-react/rules"
   ],
+  "linterOptions": {
+    "exclde": ["**/node_modules/**/*"]
+  },
   "defaultSeverity": "warning",
   "rules": {
     "adjacent-overload-signatures": true,
