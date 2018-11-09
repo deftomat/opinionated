@@ -5,7 +5,7 @@
     "tslint-react/rules"
   ],
   "linterOptions": {
-    "exclde": ["../../../**/node_modules/**/*"]
+    "exclude": ["../../../**/node_modules/**/*"]
   },
   "defaultSeverity": "warning",
   "rules": {
