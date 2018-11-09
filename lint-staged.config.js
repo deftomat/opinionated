@@ -5,5 +5,5 @@ module.exports = {
     'git add'
   ],
   '*.{js,jsx}': ['tslint --config tslint.fix.json --fix', 'prettier --write', 'git add'],
-  '*.{css,scss,json,yml,graphql,md}': ['prettier --write', 'git add']
+  '*.{html,css,scss,json,yml,graphql,md,mdx}': ['prettier --write', 'git add']
 };
