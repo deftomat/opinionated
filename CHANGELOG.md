@@ -1,3 +1,8 @@
+# 0.3.6
+
+- TSLint: exclude `node_modules`
+- Prettier: HTML, MDX support
+
 # 0.3.5
 
 - TSConfig
