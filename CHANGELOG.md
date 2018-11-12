@@ -1,3 +1,8 @@
+# 0.3.9
+
+- TSLint: improved `early-exit` rule.
+- TSLint: added `deprecation` warning.
+
 # 0.3.8
 
 - TSLint: exclude `node_modules`
