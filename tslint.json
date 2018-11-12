@@ -15,6 +15,7 @@
     "await-promise": true,
     "callable-types": true,
     "class-name": true,
+    "deprecation": { "severity": "warning" },
     "early-exit": [true, { "max-length": 2, "ignore-constructor": true }],
     "forin": true,
     "interface-over-type-literal": true,
