@@ -1,5 +1,6 @@
 {
   "rulesDirectory": [
+    "./tslint-rules",
     "tslint-consistent-codestyle",
     "tslint-microsoft-contrib",
     "tslint-react/rules"
@@ -14,7 +15,7 @@
     "await-promise": true,
     "callable-types": true,
     "class-name": true,
-    "early-exit": true,
+    "early-exit": [true, { "max-length": 2, "ignore-constructor": true }],
     "forin": true,
     "interface-over-type-literal": true,
     "jsx-boolean-value": [true, "never"],
@@ -79,7 +80,7 @@
   "jsRules": {
     "arrow-return-shorthand": true,
     "class-name": true,
-    "early-exit": true,
+    "early-exit": [true, { "max-length": 2, "ignore-constructor": true }],
     "forin": true,
     "label-position": true,
     "member-ordering": [true, { "order": ["instance-field", "instance-method"] }],
