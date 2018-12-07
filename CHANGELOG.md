@@ -1,3 +1,10 @@
+# 0.3.10
+
+- upgraded dependencies
+- NVM support
+- TSConfig: `jsx": "preserve"`
+- TSConfig: absolute path in `extends` property (requires TS v3.2)
+
 # 0.3.9
 
 - TSLint: improved `early-exit` rule.
