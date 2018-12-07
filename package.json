@@ -1,6 +1,6 @@
 {
   "name": "@deftomat/opinionated",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "Opinionated tooling for TypeScript projects",
   "license": "MIT",
   "author": "Tomas Szabo <tomas.szabo@deftomat.com>",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.0"
   },
   "peerDependencies": {
     "husky": "^1.1.2",
