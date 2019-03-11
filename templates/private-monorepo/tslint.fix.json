@@ -1,3 +1,0 @@
-{
-  "extends": ["@deftomat/opinionated/tslint.fix.json"]
-}

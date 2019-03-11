@@ -5,7 +5,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
-    "noUnusedLocals": true,
     "pretty": true,
     "strict": true,
     "strictPropertyInitialization": false

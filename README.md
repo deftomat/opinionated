@@ -6,27 +6,19 @@ Opinionated tooling for TypeScript projects.
 
 Because you don't want to copy/paste config files for all your tools into each project.
 
-## Includes
+## Description
 
-- TSLint rules for TypeScript & JavaScript.
-- [Prettier config](https://prettier.io/).
-- [Editor config](https://editorconfig.org/).
-- Pre-commit hook to check & fix staged files.
-- Recommended `tsconfig.json`.
-- Additional items like `.gitignore`, readme file, etc.
+Provides a fully featured pre-commit command which will run the following checks:
 
-## Usage
+- check yarn.lock integrity
+- check dependencies tree
+- check all TypeScript packages for TS errors
+- lint and format all staged files
 
-```
-npx @deftomat/opinionated [TYPE] [APP-NAME]
-```
+## Included configs
 
-**Example**
-
-```
-npx @deftomat/opinionated private-monorepo my-app
-```
-
-**Supported types**
-
-- `private-monorepo`
+- TSLint rules for TypeScript & JavaScript
+- [prettier config](https://prettier.io/)
+- [editor config](https://editorconfig.org/)
+- recommended `tsconfig.json`
+- additional items like `.gitignore`, readme file, etc

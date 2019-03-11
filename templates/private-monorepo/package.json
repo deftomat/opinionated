@@ -3,25 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "wsrun --exclude-missing --collect-logs --report test",
-    "tsc": "wsrun --exclude-missing --fast-exit --report tsc"
+    "precommit": "deftomat-opinionated",
+    "test": "wsrun --exclude-missing --serial --report test",
+    "tsc": "wsrun --exclude-missing --fast-exit --report tsc",
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "post-commit": "git update-index --again"
+      "pre-commit": "deftomat-opinionated"
     }
   },
   "dependencies": {},
   "devDependencies": {
     "@deftomat/opinionated": "<PKG_VERSION>",
     "@types/node": "^8.10.0",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.0",
-    "prettier": "1.15.3",
-    "tslint": "^5.11.0",
-    "typescript": "^3.2.0",
-    "wsrun": "^3.5.0"
+    "husky": "^1.3.1",
+    "prettier": "1.16.4",
+    "typescript": "^3.3.0",
+    "wsrun": "^3.6.0"
   },
   "workspaces": ["packages/*"]
 }
