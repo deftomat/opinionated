@@ -1,3 +1,12 @@
+# 0.4.0
+
+Provides a fully featured pre-commit command which will run the following checks:
+
+- check yarn.lock integrity
+- check dependencies tree
+- check all TypeScript packages for TS errors
+- lint and format all staged files
+
 # 0.3.10
 
 - upgraded dependencies
