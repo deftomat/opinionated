@@ -11,7 +11,6 @@ Because you don't want to copy/paste config files for all your tools into each p
 Provides a fully featured pre-commit command which will run the following checks:
 
 - check yarn.lock integrity
-- check dependencies tree
 - check all TypeScript packages for TS errors
 - lint and format all staged files
 
