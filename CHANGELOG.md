@@ -1,3 +1,8 @@
+# 0.4.1
+
+- remove node_modules verification as it is broken in Yarn workspaces
+- replace deprecated `no-unnecessary-bind` by build-in `unnecessary-bind` TSLint rule
+
 # 0.4.0
 
 Provides a fully featured pre-commit command which will run the following checks:
