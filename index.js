@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { green, red } = require('chalk');
-const { checkDependenciesIntegrity, checkLockIntegrity } = require('./src/integrity');
+const { checkLockIntegrity } = require('./src/integrity');
 const { checkStagedFiles } = require('./src/lintStaged');
 const { checkTypeScriptTypes } = require('./src/typeCheck');
 const { clearCache } = require('./src/utils');
@@ -11,7 +11,6 @@ async function run() {
     clearCache();
 
     await checkLockIntegrity();
-    await checkDependenciesIntegrity();
     await checkTypeScriptTypes();
     await checkStagedFiles();
 
