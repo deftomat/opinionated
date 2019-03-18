@@ -1,3 +1,8 @@
+# 0.4.2
+
+- support `tsconfig.base.json`
+- make TSC optional - added new flag `--with-tsc`
+
 # 0.4.1
 
 - remove node_modules verification as it is broken in Yarn workspaces
