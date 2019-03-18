@@ -1,7 +1,10 @@
-module.exports = function createConfig(tslintPath = 'tslint.fix.json') {
+module.exports = function createConfig({
+  tslintPath = 'tslint.fix.json',
+  tsconfigPath = 'tsconfig.json'
+}) {
   return {
     '*.{ts,tsx}': [
-      `tslint --config ${tslintPath} --project tsconfig.json --fix`,
+      `tslint --config ${tslintPath} --project ${tsconfigPath} --fix`,
       'prettier --write',
       'git add'
     ],

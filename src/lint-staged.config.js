@@ -26,5 +26,12 @@ if (fs.existsSync(customConfigPath)) {
 }
 
 function toConfig(tslintPath) {
-  return createConfig(path.relative(projectPath, tslintPath));
+  const tsconfigPath = fs.existsSync(`${projectPath}/tsconfig.base.json`)
+    ? 'tsconfig.base.json'
+    : 'tsconfig.json';
+
+  return createConfig({
+    tslintPath: path.relative(projectPath, tslintPath),
+    tsconfigPath
+  });
 }
