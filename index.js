@@ -6,12 +6,14 @@ const { checkStagedFiles } = require('./src/lintStaged');
 const { checkTypeScriptTypes } = require('./src/typeCheck');
 const { clearCache } = require('./src/utils');
 
+const runTSC = process.argv.includes('--with-tsc');
+
 async function run() {
   try {
     clearCache();
 
     await checkLockIntegrity();
-    await checkTypeScriptTypes();
+    if (runTSC) await checkTypeScriptTypes();
     await checkStagedFiles();
 
     console.info(green('🚀  All good! Ship it!'));
