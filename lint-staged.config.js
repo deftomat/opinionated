@@ -1,7 +1,7 @@
-module.exports = function createConfig({
-  tslintPath = 'tslint.fix.json',
-  tsconfigPath = 'tsconfig.json'
-}) {
+module.exports = function createConfig({ tslintPath, tsconfigPath }) {
+  if (tslintPath == null) throw Error('"tslintPath" must be provided!');
+  if (tsconfigPath == null) throw Error('"tsconfigPath" must be provided!');
+
   return {
     '*.{ts,tsx}': [
       `tslint --config ${tslintPath} --project ${tsconfigPath} --fix`,
