@@ -1,3 +1,8 @@
+# 0.4.3
+
+- support classic non-monorepo projects
+- make options in `lint-staged.config.js - createConfig()` required
+
 # 0.4.2
 
 - support `tsconfig.base.json`
