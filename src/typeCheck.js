@@ -6,6 +6,24 @@ const { fail, spawnChild } = require('./utils');
 const packagesDir = `${projectPath}/packages`;
 
 async function checkTypeScriptTypes() {
+  if (fs.existsSync(packagesDir)) return checkMonorepoPackages();
+  return checkSimplePackage();
+}
+
+async function checkSimplePackage() {
+  const path = process.cwd();
+  if (!isTypeScriptPackage({ path })) return;
+
+  console.info(cyan('Running type-check...'));
+
+  const result = await withTscResult({ path });
+  if (!hasError(result)) return;
+
+  console.info(red(`Type-check failed with the following TypeScript errors:\n`));
+  console.info(result.stdout);
+}
+
+async function checkMonorepoPackages() {
   console.info(cyan('Running type-check in each TypeScript package...'));
 
   const packages = fs
