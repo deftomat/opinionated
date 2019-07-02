@@ -1,4 +1,4 @@
-const { cyan, red, yellow } = require('chalk');
+const { cyan, red, yellow, underline } = require('chalk');
 const { fail, spawnChild } = require('./utils');
 
 async function checkLockIntegrity() {
@@ -12,7 +12,9 @@ async function checkLockIntegrity() {
   console.error(result.stderr);
   console.info(
     yellow(
-      `Error could be caused by an outdated yarn.lock.\nPlease check that all dependencies are correctly installed.`
+      `Error could be caused by an outdated yarn.lock.\nPlease check that all dependencies are correctly installed by running ${underline(
+        'yarn install'
+      )}`
     )
   );
   fail();
