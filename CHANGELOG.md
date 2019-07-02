@@ -1,3 +1,8 @@
+# 0.4.4
+
+- fix: better integrity check error message
+- bump dependencies
+
 # 0.4.3
 
 - support classic non-monorepo projects
