@@ -57,7 +57,7 @@ async function checkMonorepoPackages() {
 
 async function withTscResult(package) {
   const binPath = `${projectPath}/node_modules/.bin/tsc`;
-  const result = await spawnChild(binPath, ['--noEmit', '--noUnusedLocals'], {
+  const result = await spawnChild(binPath, ['--noEmit', '--noUnusedLocals', '--pretty'], {
     cwd: package.path
   });
 
