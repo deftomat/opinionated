@@ -1,3 +1,7 @@
+# 0.4.5
+
+- fix: fail on type errors in non-monorepo projects
+
 # 0.4.4
 
 - fix: better integrity check error message
