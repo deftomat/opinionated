@@ -1,3 +1,7 @@
+# 0.4.6
+
+- fix: enforce `pretty=true` flag to pretty print errors emitted by TypeScript
+
 # 0.4.5
 
 - fix: fail on type errors in non-monorepo projects
