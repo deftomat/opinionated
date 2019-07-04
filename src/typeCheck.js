@@ -21,6 +21,8 @@ async function checkSimplePackage() {
 
   console.info(red(`Type-check failed with the following TypeScript errors:\n`));
   console.info(result.stdout);
+
+  fail();
 }
 
 async function checkMonorepoPackages() {
