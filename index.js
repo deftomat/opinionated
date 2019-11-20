@@ -12,7 +12,7 @@ async function run() {
   try {
     clearCache();
 
-    await checkLockIntegrity();
+    // await checkLockIntegrity();
     if (runTSC) await checkTypeScriptTypes();
     await checkStagedFiles();
 

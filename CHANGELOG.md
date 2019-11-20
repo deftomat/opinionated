@@ -1,3 +1,7 @@
+# 0.4.7
+
+- fix: disable integrity check due to multiple false positive warnings
+
 # 0.4.6
 
 - fix: enforce `pretty=true` flag to pretty print errors emitted by TypeScript
