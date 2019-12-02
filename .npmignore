@@ -1,7 +1,0 @@
-.vscode
-node_modules
-yarn-error.log
-yarn.lock
-tslint-rules/*.ts
-tslint-rules/tsconfig.json
-TODO.md

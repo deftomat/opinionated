@@ -1,3 +1,12 @@
+# 0.5.0
+
+A complete rewrite which introduces the new `pre-commit` and `checkup` commands.
+
+- feat: remove dependency on `lint-staged`
+- feat: replace `TSLint` with `ESLint`
+- feat: create all necessary configs automatically (EditorConfig, Prettier, NVM)
+- feat: duplicate dependencies check
+
 # 0.4.7
 
 - fix: disable integrity check due to multiple false positive warnings

@@ -1,12 +1,17 @@
 {
-  "compileOnSave": false,
+  "extends": "./configs/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "pretty": true,
-    "strict": true,
-    "strictPropertyInitialization": false
-  }
+    "isolatedModules": false,
+    "lib": ["es2017"],
+    "jsx": "preserve",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "inlineSources": false,
+    "target": "esnext",
+    "outDir": "./dist",
+    "declaration": false
+  },
+  "exclude": ["node_modules", "./configs", "./templates", "./dist"]
 }
