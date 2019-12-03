@@ -1,3 +1,7 @@
+# 0.5.1
+
+- fix: specify `typescript` as peer dependency
+
 # 0.5.0
 
 A complete rewrite which introduces the new `pre-commit` and `checkup` commands.
