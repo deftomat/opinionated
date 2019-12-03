@@ -8,6 +8,7 @@ import { lint } from './src/eslint';
 import { format } from './src/format';
 import { checkNodeVersion } from './src/nodeVersion';
 import { preCommit } from './src/preCommit';
+import { getIncompleteChecks, updateIncompleteChecks } from './src/store';
 import { containsTypeScript, runTypeCheck } from './src/typeCheck';
 import { renderOnePackageWarning, step, StepResult } from './src/utils';
 import { checkLockDuplicates, checkLockIntegrity, fixLockDuplicates, usesYarn } from './src/yarn';
@@ -61,6 +62,8 @@ async function handleCheckup(cmd) {
   const context = await prepareContext({ autoStage: false });
   if (isMonorepoPackageContext(context)) renderOnePackageWarning(context);
 
+  const incompleteChecks = getIncompleteChecks(context);
+
   const { requiredChecks, autoFix } = await inquirer.prompt([
     {
       type: 'checkbox',
@@ -68,19 +71,19 @@ async function handleCheckup(cmd) {
       message: 'Select checkup operations:',
       choices: [
         {
-          checked: true,
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('engine') : true,
           name: `${bold('Engine check')} - ensures that you are using the right NodeJS version`,
           short: 'Engine check',
           value: 'engine'
         },
         usesYarn(context) && {
-          checked: true,
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
           name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
           short: 'Integrity check',
           value: 'integrity'
         },
         usesYarn(context) && {
-          checked: true,
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('duplicates') : true,
           name: `${bold(
             'Dependency duplicates check'
           )} - ensures no unnecessary dependency duplicates`,
@@ -88,19 +91,19 @@ async function handleCheckup(cmd) {
           value: 'duplicates'
         },
         {
-          checked: true,
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('eslint') : true,
           name: `${bold('Linter')} - runs ESLint`,
           short: 'Linter',
           value: 'eslint'
         },
         containsTypeScript(context) && {
-          checked: true,
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('typescript') : true,
           name: `${bold('TypeScript check')} - detects type errors and unused code`,
           short: 'TypeScript',
           value: 'typescript'
         },
         {
-          checked: false,
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('prettier') : false,
           name: `${bold('Formatting')} - runs Prettier`,
           short: 'Prettier',
           value: 'prettier'
@@ -131,73 +134,90 @@ async function handleCheckup(cmd) {
     if (!shouldRun) process.exit();
   }
 
+  updateIncompleteChecks(context, requiredChecks);
+
   const checks: Check[] = [];
 
   checks.push({
+    name: 'engine',
     enabled: requiredChecks.includes('engine'),
     description: 'Checking NodeJS version',
     run: () => checkNodeVersion(context)
   });
 
   checks.push({
+    name: 'integrity',
     enabled: requiredChecks.includes('integrity'),
     description: 'Checking yarn.lock integrity',
     run: () => checkLockIntegrity(context)
   });
 
   checks.push({
+    name: 'duplicates',
     enabled: requiredChecks.includes('duplicates') && autoFix,
     description: 'Removing dependency duplicates',
     run: () => fixLockDuplicates(context)
   });
 
   checks.push({
+    name: 'duplicates',
     enabled: requiredChecks.includes('duplicates') && !autoFix,
     description: 'Detecting dependency duplicates',
     run: () => checkLockDuplicates(context)
   });
 
   checks.push({
+    name: 'eslint',
     enabled: requiredChecks.includes('eslint') && autoFix,
     description: 'Linting & auto-fixing via ESLint',
     run: () => lint({ context, autoFix: true })
   });
 
   checks.push({
+    name: 'eslint',
     enabled: requiredChecks.includes('eslint') && !autoFix,
     description: 'Linting via ESLint',
     run: () => lint({ context, autoFix: false })
   });
 
   checks.push({
+    name: 'typescript',
     enabled: requiredChecks.includes('typescript'),
     description: 'Running TypeScript checks',
     run: () => runTypeCheck(context)
   });
 
   checks.push({
+    name: 'prettier',
     enabled: requiredChecks.includes('prettier'),
     description: 'Formatting with Prettier',
     run: () => format(context)
   });
 
+  const missingChecks = new Set<string>(requiredChecks);
+
   for (const check of checks) {
     if (!check.enabled) continue;
+
     check.result = await step({
       description: check.description,
       run: check.run
     });
+
+    missingChecks.delete(check.name);
+    updateIncompleteChecks(context, missingChecks);
   }
 
   // If any of the checks ends with warning
   if (checks.some(check => check.result !== undefined && check.result.hasWarning)) return;
 
-  if (!isMonorepoPackageContext(context) && requiredChecks.length > 0) {
+  if (!isMonorepoPackageContext(context) && requiredChecks.size > 0) {
     console.info(magenta(`🎉  All good!`));
   }
 }
 
 interface Check {
+  readonly name: string;
   readonly enabled: boolean;
   readonly description: string;
   result?: StepResult;

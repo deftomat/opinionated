@@ -35,6 +35,7 @@
     "babel-eslint": "^10.0.0",
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
+    "configstore": "^5.0.0",
     "del": "^5.0.0",
     "eslint": "^6.1.0",
     "eslint-plugin-import": "^2.0.0",
@@ -49,6 +50,7 @@
   },
   "prettier": "./configs/prettier.config.js",
   "devDependencies": {
+    "@types/configstore": "^4.0.0",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^12.12.14"
   }
