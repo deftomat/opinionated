@@ -1,6 +1,7 @@
 import { bold, gray, magenta, red, yellow } from 'chalk';
 import program from 'commander';
 import inquirer from 'inquirer';
+import { registerExitHandlers } from './src/cleanup';
 import { ensureConfigs } from './src/configs';
 import { Context, describeContext, isMonorepoPackageContext } from './src/context';
 import { lint } from './src/eslint';
@@ -12,6 +13,8 @@ import { renderOnePackageWarning, step, StepResult } from './src/utils';
 import { checkLockDuplicates, checkLockIntegrity, fixLockDuplicates, usesYarn } from './src/yarn';
 
 const { version, description } = require('../package.json');
+
+registerExitHandlers();
 
 program.version(version, '-v, --vers', 'output the current version').description(description);
 
@@ -168,7 +171,7 @@ async function handleCheckup(cmd) {
 
   checks.push({
     enabled: requiredChecks.includes('typescript'),
-    description: 'Checking TypeScript types',
+    description: 'Running TypeScript checks',
     run: () => runTypeCheck(context)
   });
 

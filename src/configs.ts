@@ -100,7 +100,7 @@ async function ensureNvmConfig(context: Context, autoStage: boolean): Promise<st
 
   if (!fs.existsSync(configPath)) {
     const version = process.versions.node;
-    const normalized = version.substring(0, version.indexOf('.'));
+    const normalized = version.substring(0, version.indexOf('.')) + '\n';
     fs.writeFileSync(configPath, normalized);
     if (autoStage) await git.stageFile(configPath);
     return 'NVM';

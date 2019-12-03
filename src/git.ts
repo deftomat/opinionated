@@ -4,6 +4,7 @@
 import { spawnSync } from 'child_process';
 import del from 'del';
 import execa from 'execa';
+import { resolve } from 'path';
 import { debug } from './utils';
 
 export type GitWorkflow = ReturnType<typeof createGitWorkflow>;
@@ -12,15 +13,6 @@ export function createGitWorkflow(cwd: string) {
   let workingCopyTree: any = null;
   let indexTree: any = null;
   let formattedIndexTree: any = null;
-
-  async function isGitRepository() {
-    try {
-      await execGit(['rev-parse', '--git-dir']);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
 
   async function execGit(args, options?) {
     debug('Running git command', args);
@@ -33,23 +25,26 @@ export function createGitWorkflow(cwd: string) {
   }
 
   async function getStagedFiles() {
-    const result = await execGit(['diff', '--staged', '--diff-filter=ACM', '--name-only']);
+    const result = await execGit([
+      'diff',
+      '--staged',
+      '--diff-filter=ACM',
+      '--name-only',
+      '--relative'
+    ]);
 
     return result
       .split('\n')
       .map(path => path.trim())
-      .filter(path => path !== '');
+      .filter(path => path !== '')
+      .map(path => resolve(`${cwd}/${path}`));
   }
 
-  function stageFile(path) {
-    return execGit(['add', path]);
-  }
-
-  function writeTree() {
+  async function writeTree() {
     return execGit(['write-tree']);
   }
 
-  function getDiffForTrees(tree1, tree2) {
+  async function getDiffForTrees(tree1, tree2) {
     debug(`Generating diff between trees ${tree1} and ${tree2}...`);
     return execGit([
       'diff-tree',
@@ -81,6 +76,7 @@ export function createGitWorkflow(cwd: string) {
     return partiallyStaged.length > 0;
   }
 
+  // eslint-disable-next-line
   async function stashSave() {
     debug('Stashing files...');
     // Save ref to the current index
@@ -93,7 +89,7 @@ export function createGitWorkflow(cwd: string) {
     await execGit(['read-tree', indexTree]);
     // Remove all modifications
     await execGit(['checkout-index', '-af']);
-    // await execGit(['clean', '-dfx'])
+    // await execGit(['clean', '-dfx'], options)
     debug('Done stashing files!');
     return [workingCopyTree, indexTree];
   }
@@ -111,8 +107,7 @@ export function createGitWorkflow(cwd: string) {
      * See http://git.661346.n2.nabble.com/Bug-in-Git-Gui-Creates-corrupt-patch-td2384251.html
      * and https://stackoverflow.com/questions/13223868/how-to-stage-line-by-line-in-git-gui-although-no-newline-at-end-of-file-warnin
      */
-    const patch = `${diff}\n`;
-    if (patch) {
+    if (diff) {
       try {
         /**
          * Apply patch to index. We will apply it with --reject so it it will try apply hunk by hunk
@@ -122,15 +117,15 @@ export function createGitWorkflow(cwd: string) {
         await execGit(
           ['apply', '-v', '--whitespace=nowarn', '--reject', '--recount', '--unidiff-zero'],
           {
-            input: patch
+            input: `${diff}\n`
           }
         );
       } catch (err) {
         debug('Could not apply patch to the stashed files cleanly');
         debug(err);
         debug('Patch content:');
-        debug(patch);
-        throw new Error('Could not apply patch to the stashed files cleanly.\n' + err);
+        debug(diff);
+        throw new Error('Could not apply patch to the stashed files cleanly.' + err);
       }
     }
   }
@@ -186,6 +181,19 @@ export function createGitWorkflow(cwd: string) {
     return null;
   }
 
+  function stageFile(path) {
+    return execGit(['add', path]);
+  }
+
+  async function isGitRepository() {
+    try {
+      await execGit(['rev-parse', '--git-dir']);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   async function hasChanges(): Promise<boolean> {
     const changed = spawnSync('git', ['status', '--porcelain', '-uall']);
     if (changed.status !== 0) throw Error(changed.stderr.toString());
@@ -193,14 +201,14 @@ export function createGitWorkflow(cwd: string) {
   }
 
   return {
+    stageFile,
     isGitRepository,
-    exec: execGit,
-    getStagedFiles,
     stashSave,
     stashPop,
     hasPartiallyStagedFiles,
     updateStash,
-    stageFile,
+    exec: execGit,
+    getStagedFiles,
     hasChanges
   };
 }

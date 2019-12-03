@@ -12,8 +12,8 @@ export interface MonorepoContext {
   readonly projectRoot: string;
   readonly projectSpec: SpecConnector;
   readonly packagesPath: string;
-  readonly packageRoot: null;
-  readonly packageSpec: null;
+  readonly packageRoot: undefined;
+  readonly packageSpec: undefined;
   readonly cachePath: string;
   readonly git: GitWorkflow;
 }
@@ -33,7 +33,7 @@ export interface PackageContext {
   readonly type: 'package';
   readonly projectRoot: string;
   readonly projectSpec: SpecConnector;
-  readonly packagesPath: null;
+  readonly packagesPath: undefined;
   readonly packageRoot: string;
   readonly packageSpec: SpecConnector;
   readonly cachePath: string;
@@ -60,7 +60,7 @@ export function describeContext(cwd: string): Context {
       type: 'package',
       projectRoot: cwd,
       projectSpec: specConnector,
-      packagesPath: null,
+      packagesPath: undefined,
       packageRoot: cwd,
       packageSpec: specConnector,
       cachePath: toCachePath(cwd),
@@ -73,8 +73,8 @@ export function describeContext(cwd: string): Context {
         projectRoot: cwd,
         projectSpec: specConnector,
         packagesPath: `${cwd}/packages`,
-        packageRoot: null,
-        packageSpec: null,
+        packageRoot: undefined,
+        packageSpec: undefined,
         cachePath: toCachePath(cwd),
         git: createGitWorkflow(cwd)
       };

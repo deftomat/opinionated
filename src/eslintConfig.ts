@@ -1,6 +1,3 @@
-import fs from 'fs';
-import { Context } from './context';
-
 /**
  * ⚠️ !!!STOP: ESSENTIAL RULES MUST BE AUTOFIXABLE !!! ⚠️
  * When adding rules here, you need to make sure they are compatible with
@@ -13,7 +10,7 @@ const essentialRules = {
   'no-else-return': 'error',
   'no-implicit-coercion': 'error',
   'no-undef-init': 'error',
-  'multiline-comment-style': 'error',
+  // 'multiline-comment-style': 'error',
   'no-lonely-if': 'error',
   'no-unneeded-ternary': 'error',
   'no-useless-computed-key': 'error',
@@ -21,6 +18,7 @@ const essentialRules = {
   'no-var': 'error',
   'object-shorthand': 'error',
   'no-regex-spaces': 'error',
+  'spaced-comment': ['error', 'always', { exceptions: ['-', '+', '=', '*'] }],
   'dot-notation': 'error',
   'no-useless-return': 'error',
   'prefer-arrow-callback': ['error', { allowNamedFunctions: true, allowUnboundThis: true }],
@@ -45,7 +43,10 @@ const essentialTypescriptRules = {
 const strictRules = {
   'no-compare-neg-zero': 'error',
   'no-cond-assign': 'error',
-  'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+  'no-console': [
+    'error',
+    { allow: ['warn', 'error', 'info', 'time', 'timeEnd', 'timeLog', 'debug', 'clear'] }
+  ],
   'no-constant-condition': ['error', { checkLoops: false }],
   'no-debugger': 'error',
   'no-duplicate-case': 'error',
@@ -66,7 +67,7 @@ const strictRules = {
   'no-extend-native': 'error',
   'no-extra-bind': 'error',
   'no-implied-eval': 'error',
-  'no-invalid-this': 'error',
+  // 'no-invalid-this': 'error', // not working on class properties: https://github.com/typescript-eslint/typescript-eslint/issues/491
   'no-new': 'error',
   'no-new-wrappers': 'error',
   'no-return-await': 'error',
@@ -93,6 +94,7 @@ const strictRules = {
  * make sure to disable the ESLint rule here.
  */
 const strictTypescriptRules = {
+  '@typescript-eslint/prefer-for-of': 'error',
   '@typescript-eslint/adjacent-overload-signatures': 'error',
   '@typescript-eslint/class-name-casing': ['error', { allowUnderscorePrefix: true }],
   '@typescript-eslint/interface-name-prefix': ['error', { prefixWithI: 'never' }],
@@ -160,15 +162,3 @@ function toLintConfig({ rules, tsOnlyRules, plugins }) {
     rules
   };
 }
-
-export function findIgnoreFile(context: Context) {
-  const { projectRoot, projectSpec } = context;
-  const eslintIgnore = `${projectRoot}/.eslintignore`;
-  const gitIgnore = `${projectRoot}/.gitignore`;
-
-  if (fs.existsSync(eslintIgnore)) return eslintIgnore;
-  if (projectSpec.get().eslintIgnore != null) return;
-  if (fs.existsSync(gitIgnore)) return gitIgnore;
-}
-
-export const defaultIgnorePattern = '**/node_modules/';

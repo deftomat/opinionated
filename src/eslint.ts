@@ -1,7 +1,10 @@
 import { CLIEngine } from 'eslint';
+import { isMainThread } from 'worker_threads';
 import { Context } from './context';
 import { ToolError, ToolWarning } from './errors';
-import { checkupLintConfig, defaultIgnorePattern, findIgnoreFile } from './eslintConfig';
+import { checkupLintConfig } from './eslintConfig';
+import { defaultIgnorePattern, findEslintIgnoreFile } from './ignore';
+import { asWorkerMaster, runAsWorkerSlave } from './utils';
 
 /**
  * Runs a full lint on a given project.
@@ -10,11 +13,56 @@ import { checkupLintConfig, defaultIgnorePattern, findIgnoreFile } from './eslin
  * then ESLint will run only in that sub-package.
  */
 export async function lint({ context, autoFix = false }: { context: Context; autoFix?: boolean }) {
-  const { projectRoot, packageRoot, cachePath } = context;
+  try {
+    const runEslint = asWorkerMaster<typeof getEslintReport>(__filename);
 
+    const { results, errorCount, warningCount } = await runEslint({
+      ignorePath: findEslintIgnoreFile(context),
+      cachePath: context.cachePath,
+      projectRoot: context.projectRoot,
+      packageRoot: context.packageRoot,
+      autoFix
+    });
+
+    if (errorCount === 0 && warningCount === 0) return;
+
+    const formatter = CLIEngine.getFormatter('stylish');
+    const formattedReport = formatter(results);
+
+    if (errorCount === 0) {
+      throw new ToolWarning(
+        `We found a minor ESLint warnings. We recommend you to fix them as soon as possible:`,
+        formattedReport
+      );
+    }
+    throw new ToolError(`ESLint failed with the following errors:`, formattedReport);
+  } catch (e) {
+    if (e.messageTemplate === 'file-not-found') return;
+    if (e.messageTemplate === 'all-files-ignored') return;
+    throw e;
+  }
+}
+
+if (!isMainThread) {
+  runAsWorkerSlave(getEslintReport);
+}
+
+function getEslintReport({
+  ignorePath,
+  cachePath,
+  projectRoot,
+  packageRoot,
+  autoFix
+}: {
+  ignorePath: string | undefined;
+  cachePath: string;
+  projectRoot: string;
+  packageRoot: string | undefined;
+  autoFix: boolean;
+}) {
   const linter = new CLIEngine({
     ignore: true,
-    ignorePath: findIgnoreFile(context),
+    ignorePath,
     useEslintrc: true,
     ignorePattern: defaultIgnorePattern,
     cache: true,
@@ -24,27 +72,8 @@ export async function lint({ context, autoFix = false }: { context: Context; aut
     baseConfig: checkupLintConfig
   });
 
-  try {
-    const report = linter.executeOnFiles([`${packageRoot || projectRoot}/**/*.?(js|jsx|ts|tsx)`]);
+  const report = linter.executeOnFiles([`${packageRoot || projectRoot}/**/*.?(js|jsx|ts|tsx)`]);
 
-    if (autoFix) CLIEngine.outputFixes(report);
-
-    const { errorCount, warningCount, results } = report;
-
-    if (errorCount === 0 && warningCount === 0) return;
-    const formatter = linter.getFormatter('stylish');
-    const formatted = formatter(results);
-
-    if (errorCount === 0) {
-      throw new ToolWarning(
-        `We found a minor ESLint warnings. We recommend you to fix them as soon as possible:`,
-        formatted
-      );
-    }
-    throw new ToolError(`ESLint failed with the following errors:`, formatted);
-  } catch (e) {
-    if (e.messageTemplate === 'file-not-found') return;
-    if (e.messageTemplate === 'all-files-ignored') return;
-    throw e;
-  }
+  if (autoFix) CLIEngine.outputFixes(report);
+  return report;
 }

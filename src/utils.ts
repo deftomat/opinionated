@@ -1,5 +1,6 @@
 import { cyan, green, red, yellow } from 'chalk';
 import ora from 'ora';
+import { parentPort, Worker, workerData } from 'worker_threads';
 import { MonorepoPackageContext } from './context';
 
 export interface StepResult {
@@ -74,3 +75,38 @@ export function renderOnePackageWarning(context: MonorepoPackageContext) {
   console.warn(yellow.inverse('                                                               '));
   console.warn('');
 }
+
+export function asWorkerMaster<T extends Function>(workerFilename: string): AlwaysPromiseResult<T> {
+  return ((...args) => {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(workerFilename, { workerData: args });
+      worker.on('message', ({ value, error }) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(value);
+        }
+      });
+      worker.on('error', reject);
+      worker.on('exit', code => {
+        if (code !== 0) reject(new Error(`Worker stopped with exit code ${code}`));
+      });
+    });
+  }) as any;
+}
+
+export async function runAsWorkerSlave(fn: Function) {
+  if (parentPort == null) throw Error('Unexpected process state!');
+  try {
+    const value = await fn(...workerData);
+    parentPort.postMessage({ value });
+  } catch (error) {
+    parentPort.postMessage({ error });
+  }
+}
+
+type AlwaysPromiseResult<T> = T extends (...args: any[]) => Promise<any>
+  ? T
+  : T extends (...args: infer I) => infer O
+  ? (...args: I) => Promise<O>
+  : never;

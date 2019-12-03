@@ -96,3 +96,23 @@ This configuration allows you to automatically run _pre-commit_ check before eac
 If you need to alter the predefined ESLint rules, just follow the [ESLint configuration guide](https://eslint.org/docs/user-guide/configuring).
 
 Any rule specified in your configuration file will be merged over build-in configuration. This allows you to add/edit/remove any rule you want.
+
+## Ignoring files and directories
+
+As tool is using ESLint and Prettier, you can follow their guides to ignore any file or directory.
+
+However, when tool detects, that there are no _.ignore_ file for these tools, then it tries to use `.opinionatedignore`
+file which will be applied to both ESLint and Prettier. If there is no `.opinionatedignore`, then `.gitignore` will be used.
+
+**Resolution order for ESLint:**
+
+- `.eslintignore`
+- `eslintIgnore` property in `package.json`
+- `.opinionatedignore`
+- `.gitignore`
+
+**Resolution order for Prettier:**
+
+- `.prettierignore`
+- `.opinionatedignore`
+- `.gitignore`
