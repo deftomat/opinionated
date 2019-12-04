@@ -1,4 +1,4 @@
-import { bold, gray, magenta, red, yellow } from 'chalk';
+import { bold, gray, red, yellow } from 'chalk';
 import program from 'commander';
 import inquirer from 'inquirer';
 import { registerExitHandlers } from './src/cleanup';
@@ -210,10 +210,6 @@ async function handleCheckup(cmd) {
 
   // If any of the checks ends with warning
   if (checks.some(check => check.result !== undefined && check.result.hasWarning)) return;
-
-  if (!isMonorepoPackageContext(context) && requiredChecks.size > 0) {
-    console.info(magenta(`🎉  All good!`));
-  }
 }
 
 interface Check {
