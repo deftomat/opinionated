@@ -31,8 +31,8 @@ const essentialRules = {
  * If adding a typescript-eslint version of an existing ESLint rule,
  * make sure to disable the ESLint rule here.
  *
- * Also, please make sure typescript-eslint rule doesn't require type information
- * as type information is not generated during pre-commit because it can be time consuming.
+ * Also, please make sure rule doesn't require type information
+ * as type information is not generated because it can be time consuming.
  */
 const essentialTypescriptRules = {
   '@typescript-eslint/no-inferrable-types': 'error',
@@ -95,6 +95,9 @@ const strictRules = {
 /**
  * If adding a typescript-eslint version of an existing ESLint rule,
  * make sure to disable the ESLint rule here.
+ *
+ * Also, please make sure rule doesn't require type information
+ * as type information is not generated because it can be time consuming.
  */
 const strictTypescriptRules = {
   '@typescript-eslint/prefer-for-of': 'error',
@@ -104,45 +107,35 @@ const strictTypescriptRules = {
   '@typescript-eslint/no-empty-interface': 'error',
   '@typescript-eslint/no-require-imports': 'error',
   '@typescript-eslint/no-useless-constructor': 'error',
-  '@typescript-eslint/no-misused-new': 'error',
-  '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
-  // '@typescript-eslint/prefer-readonly': 'error',
   '@typescript-eslint/no-this-alias': ['error', { allowDestructuring: true }]
-  // '@typescript-eslint/prefer-nullish-coalescing': ['error'] // TODO: Enable when TypeScript 3.7 will be widely used!
-  // '@typescript-eslint/prefer-optional-chain': ['error'] // TODO: Enable when TypeScript 3.7 will be widely used!
 };
 
 export const preCommitLintConfig = toLintConfig({
   rules: essentialRules,
   tsOnlyRules: essentialTypescriptRules,
-  plugins: ['react'],
-  generateTypeInformation: false
+  plugins: ['react']
 });
 
 export const checkupLintConfig = toLintConfig({
   rules: { ...essentialRules, ...strictRules },
   tsOnlyRules: { ...essentialTypescriptRules, ...strictTypescriptRules },
-  plugins: ['react', 'import'],
-  generateTypeInformation: true
+  plugins: ['react', 'import']
 });
 
 export const editorLintConfig = toLintConfig({
   rules: strictRules,
   tsOnlyRules: strictTypescriptRules,
-  plugins: ['react', 'import'],
-  generateTypeInformation: false
+  plugins: ['react', 'import']
 });
 
 function toLintConfig({
   rules,
   tsOnlyRules,
-  plugins,
-  generateTypeInformation
+  plugins
 }: {
   rules: object;
   tsOnlyRules: object;
   plugins: string[];
-  generateTypeInformation: boolean;
 }) {
   return {
     root: true,
@@ -171,9 +164,6 @@ function toLintConfig({
         plugins: ['@typescript-eslint'],
         parser: '@typescript-eslint/parser',
         parserOptions: {
-          project: generateTypeInformation
-            ? ['./packages/*/tsconfig.json', './tsconfig.json']
-            : undefined,
           ecmaVersion: 2018,
           sourceType: 'module',
           ecmaFeatures: { jsx: true },
