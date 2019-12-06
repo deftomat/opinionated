@@ -1,3 +1,9 @@
+# 0.5.2
+
+- fix: fix failing `pre-commit` command
+- fix: better messages
+- feat: more TS ESLint rules & type info support
+
 # 0.5.1
 
 - fix: specify `typescript` as peer dependency
