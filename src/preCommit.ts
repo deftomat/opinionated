@@ -15,7 +15,7 @@ export async function preCommit(context: Context) {
   const staged = await git.getStagedFiles();
   if (staged.length === 0) return;
 
-  const hasPartiallyStagedFiles = git.hasPartiallyStagedFiles();
+  const hasPartiallyStagedFiles = await git.hasPartiallyStagedFiles();
 
   if (hasPartiallyStagedFiles) await git.stashSave();
   const cleanup = hasPartiallyStagedFiles ? () => git.stashPop() : () => null;
@@ -29,10 +29,10 @@ export async function preCommit(context: Context) {
 
   if (hasPartiallyStagedFiles && !hasError) await git.updateStash();
 
-  await cleanup();
   onProcessExit.delete(cleanup);
+  await cleanup();
 
-  if (errors.length > 0) {
+  if (hasError) {
     throw new ToolError(
       'Pre-commit checks failed with the following errors:',
       ...errors.map(e => `${e}\n`)

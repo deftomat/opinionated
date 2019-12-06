@@ -1,5 +1,5 @@
 /**
- * Copied from `lint-staged` project.
+ * Partially copied from `lint-staged` project.
  */
 import { spawnSync } from 'child_process';
 import del from 'del';
@@ -13,11 +13,26 @@ export function createGitWorkflow(cwd: string) {
   let workingCopyTree: any = null;
   let indexTree: any = null;
   let formattedIndexTree: any = null;
+  let _gitDir: Promise<string | undefined>;
+
+  function gitDir() {
+    if (_gitDir === undefined) {
+      // git cli uses GIT_DIR to fast track its response however it might be set to a different path
+      // depending on where the caller initiated this from, hence clear GIT_DIR
+      delete process.env.GIT_DIR;
+
+      _gitDir = execGit(['rev-parse', '--show-toplevel'], { cwd }).then(
+        path => path,
+        () => undefined
+      );
+    }
+    return _gitDir;
+  }
 
   async function execGit(args, options?) {
     debug('Running git command', args);
     try {
-      const { stdout } = await execa('git', args, { cwd, ...options });
+      const { stdout } = await execa('git', args, options);
       return stdout;
     } catch (err) {
       throw new Error(err);
@@ -25,13 +40,11 @@ export function createGitWorkflow(cwd: string) {
   }
 
   async function getStagedFiles() {
-    const result = await execGit([
-      'diff',
-      '--staged',
-      '--diff-filter=ACM',
-      '--name-only',
-      '--relative'
-    ]);
+    const cwd = await gitDir();
+    const result = await execGit(
+      ['diff', '--staged', '--diff-filter=ACM', '--name-only', '--relative'],
+      { cwd }
+    );
 
     return result
       .split('\n')
@@ -41,25 +54,28 @@ export function createGitWorkflow(cwd: string) {
   }
 
   async function writeTree() {
-    return execGit(['write-tree']);
+    return execGit(['write-tree'], { cwd: await gitDir() });
   }
 
   async function getDiffForTrees(tree1, tree2) {
     debug(`Generating diff between trees ${tree1} and ${tree2}...`);
-    return execGit([
-      'diff-tree',
-      '--ignore-submodules',
-      '--binary',
-      '--no-color',
-      '--no-ext-diff',
-      '--unified=0',
-      tree1,
-      tree2
-    ]);
+    return execGit(
+      [
+        'diff-tree',
+        '--ignore-submodules',
+        '--binary',
+        '--no-color',
+        '--no-ext-diff',
+        '--unified=0',
+        tree1,
+        tree2
+      ],
+      { cwd: await gitDir() }
+    );
   }
 
   async function hasPartiallyStagedFiles() {
-    const stdout = await execGit(['status', '--porcelain']);
+    const stdout = await execGit(['status', '--porcelain'], { cwd: await gitDir() });
     if (!stdout) return false;
 
     const changedFiles = stdout.split('\n');
@@ -82,13 +98,13 @@ export function createGitWorkflow(cwd: string) {
     // Save ref to the current index
     indexTree = await writeTree();
     // Add working copy changes to index
-    await execGit(['add', '.']);
+    await execGit(['add', '.'], { cwd: await gitDir() });
     // Save ref to the working copy index
     workingCopyTree = await writeTree();
     // Restore the current index
-    await execGit(['read-tree', indexTree]);
+    await execGit(['read-tree', indexTree], { cwd: await gitDir() });
     // Remove all modifications
-    await execGit(['checkout-index', '-af']);
+    await execGit(['checkout-index', '-af'], { cwd: await gitDir() });
     // await execGit(['clean', '-dfx'], options)
     debug('Done stashing files!');
     return [workingCopyTree, indexTree];
@@ -117,7 +133,8 @@ export function createGitWorkflow(cwd: string) {
         await execGit(
           ['apply', '-v', '--whitespace=nowarn', '--reject', '--recount', '--unidiff-zero'],
           {
-            input: `${diff}\n`
+            input: `${diff}\n`,
+            cwd: await gitDir()
           }
         );
       } catch (err) {
@@ -137,15 +154,15 @@ export function createGitWorkflow(cwd: string) {
 
     debug('Restoring working copy');
     // Restore the stashed files in the index
-    await execGit(['read-tree', workingCopyTree]);
+    await execGit(['read-tree', workingCopyTree], { cwd: await gitDir() });
     // and sync it to the working copy (i.e. update files on fs)
-    await execGit(['checkout-index', '-af']);
+    await execGit(['checkout-index', '-af'], { cwd: await gitDir() });
 
     // Then, restore the index after working copy is restored
     if (indexTree !== null && formattedIndexTree === null) {
       // Restore changes that were in index if there are no formatting changes
       debug('Restoring index');
-      await execGit(['read-tree', indexTree]);
+      await execGit(['read-tree', indexTree], { cwd: await gitDir() });
     } else {
       /**
        * There are formatting changes we want to restore in the index
@@ -154,7 +171,7 @@ export function createGitWorkflow(cwd: string) {
        * to the working copy by applying the patch with --reject option.
        */
       debug('Restoring index with formatting changes');
-      await execGit(['read-tree', formattedIndexTree]);
+      await execGit(['read-tree', formattedIndexTree], { cwd: await gitDir() });
       try {
         await applyPatchFor(indexTree, formattedIndexTree);
       } catch (err) {
@@ -181,8 +198,8 @@ export function createGitWorkflow(cwd: string) {
     return null;
   }
 
-  function stageFile(path) {
-    return execGit(['add', path]);
+  async function stageFile(path: string) {
+    return execGit(['add', path], { cwd: await gitDir() });
   }
 
   async function isGitRepository() {
