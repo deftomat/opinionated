@@ -1,3 +1,7 @@
+# 0.5.3
+
+- fix: remove type info support from ESLint
+
 # 0.5.2
 
 - fix: fix failing `pre-commit` command
