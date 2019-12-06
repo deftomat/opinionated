@@ -31,10 +31,7 @@ async function runTscInPackage(context: PackageContext | MonorepoPackageContext)
   const result = await withTscResult(context)({ path: packageRoot });
   if (!hasError(result)) return;
 
-  throw new ToolError(
-    red(`Type-check failed with the following TypeScript errors:\n`),
-    result.stdout
-  );
+  throw new ToolError(red(`Checkup failed with the following TypeScript errors:\n`), result.stdout);
 }
 
 async function runTscInAllPackages(context: MonorepoContext) {

@@ -73,13 +73,13 @@ async function handleCheckup(cmd) {
         {
           checked: incompleteChecks.size > 0 ? incompleteChecks.has('engine') : true,
           name: `${bold('Engine check')} - ensures that you are using the right NodeJS version`,
-          short: 'Engine check',
+          short: 'Engine',
           value: 'engine'
         },
         usesYarn(context) && {
           checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
           name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
-          short: 'Integrity check',
+          short: 'Integrity',
           value: 'integrity'
         },
         usesYarn(context) && {
@@ -105,7 +105,7 @@ async function handleCheckup(cmd) {
         {
           checked: incompleteChecks.size > 0 ? incompleteChecks.has('prettier') : false,
           name: `${bold('Formatting')} - runs Prettier`,
-          short: 'Prettier',
+          short: 'Formatter',
           value: 'prettier'
         }
       ].filter(Boolean)
