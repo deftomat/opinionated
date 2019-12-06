@@ -22,6 +22,7 @@ const essentialRules = {
   'dot-notation': 'error',
   'no-useless-return': 'error',
   'prefer-arrow-callback': ['error', { allowNamedFunctions: true, allowUnboundThis: true }],
+  'prefer-destructuring': ['error', { array: false, object: true }],
   yoda: ['error', 'never', { exceptRange: true }]
 };
 
@@ -29,6 +30,9 @@ const essentialRules = {
  * ⚠️ !!!STOP: ESSENTIAL RULES MUST BE AUTOFIXABLE !!! ⚠️
  * If adding a typescript-eslint version of an existing ESLint rule,
  * make sure to disable the ESLint rule here.
+ *
+ * Also, please make sure typescript-eslint rule doesn't require type information
+ * as type information is not generated during pre-commit because it can be time consuming.
  */
 const essentialTypescriptRules = {
   '@typescript-eslint/no-inferrable-types': 'error',
@@ -79,7 +83,6 @@ const strictRules = {
   'no-delete-var': 'error',
   'no-buffer-constructor': 'error',
   'prefer-const': 'error',
-  'prefer-destructuring': ['error', { array: false, object: true }],
   'prefer-numeric-literals': 'error',
   'prefer-rest-params': 'error',
   'prefer-spread': 'error',
@@ -100,28 +103,47 @@ const strictTypescriptRules = {
   '@typescript-eslint/interface-name-prefix': ['error', { prefixWithI: 'never' }],
   '@typescript-eslint/no-empty-interface': 'error',
   '@typescript-eslint/no-require-imports': 'error',
-  '@typescript-eslint/no-useless-constructor': 'error'
+  '@typescript-eslint/no-useless-constructor': 'error',
+  '@typescript-eslint/no-misused-new': 'error',
+  '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
+  // '@typescript-eslint/prefer-readonly': 'error',
+  '@typescript-eslint/no-this-alias': ['error', { allowDestructuring: true }]
+  // '@typescript-eslint/prefer-nullish-coalescing': ['error'] // TODO: Enable when TypeScript 3.7 will be widely used!
+  // '@typescript-eslint/prefer-optional-chain': ['error'] // TODO: Enable when TypeScript 3.7 will be widely used!
 };
 
 export const preCommitLintConfig = toLintConfig({
   rules: essentialRules,
   tsOnlyRules: essentialTypescriptRules,
-  plugins: ['react']
+  plugins: ['react'],
+  generateTypeInformation: false
 });
 
 export const checkupLintConfig = toLintConfig({
   rules: { ...essentialRules, ...strictRules },
   tsOnlyRules: { ...essentialTypescriptRules, ...strictTypescriptRules },
-  plugins: ['react', 'import']
+  plugins: ['react', 'import'],
+  generateTypeInformation: true
 });
 
 export const editorLintConfig = toLintConfig({
   rules: strictRules,
   tsOnlyRules: strictTypescriptRules,
-  plugins: ['react', 'import']
+  plugins: ['react', 'import'],
+  generateTypeInformation: false
 });
 
-function toLintConfig({ rules, tsOnlyRules, plugins }) {
+function toLintConfig({
+  rules,
+  tsOnlyRules,
+  plugins,
+  generateTypeInformation
+}: {
+  rules: object;
+  tsOnlyRules: object;
+  plugins: string[];
+  generateTypeInformation: boolean;
+}) {
   return {
     root: true,
     env: {
@@ -149,11 +171,12 @@ function toLintConfig({ rules, tsOnlyRules, plugins }) {
         plugins: ['@typescript-eslint'],
         parser: '@typescript-eslint/parser',
         parserOptions: {
+          project: generateTypeInformation
+            ? ['./packages/*/tsconfig.json', './tsconfig.json']
+            : undefined,
           ecmaVersion: 2018,
           sourceType: 'module',
-          ecmaFeatures: {
-            jsx: true
-          },
+          ecmaFeatures: { jsx: true },
           warnOnUnsupportedTypeScriptVersion: true
         },
         rules: tsOnlyRules
