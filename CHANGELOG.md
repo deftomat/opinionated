@@ -1,3 +1,10 @@
+# 0.5.4
+
+- feat: measure check time
+- fix: ESLint config
+- fix: type check performance
+- fix: better Prettier error handling
+
 # 0.5.3
 
 - fix: remove type info support from ESLint
