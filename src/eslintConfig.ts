@@ -18,11 +18,17 @@ const essentialRules = {
   'no-var': 'error',
   'object-shorthand': 'error',
   'no-regex-spaces': 'error',
-  'spaced-comment': ['error', 'always', { exceptions: ['-', '+', '=', '*'] }],
+  'spaced-comment': ['error', 'always', { exceptions: ['-', '+', '=', '*'], markers: ['/'] }],
   'dot-notation': 'error',
   'no-useless-return': 'error',
   'prefer-arrow-callback': ['error', { allowNamedFunctions: true, allowUnboundThis: true }],
-  'prefer-destructuring': ['error', { array: false, object: true }],
+  'prefer-destructuring': [
+    'error',
+    {
+      VariableDeclarator: { array: false, object: true },
+      AssignmentExpression: { array: false, object: false }
+    }
+  ],
   yoda: ['error', 'never', { exceptRange: true }]
 };
 
@@ -147,7 +153,7 @@ function toLintConfig({
       node: true
     },
     settings: {
-      react: { version: 'detect' }
+      react: { version: '999.999.999' }
     },
     parser: 'babel-eslint',
     parserOptions: {
