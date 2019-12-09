@@ -2,6 +2,7 @@ import execa from 'execa';
 import { Context } from './context';
 import { ToolError } from './errors';
 import { findPrettierIgnoreFile } from './ignore';
+import { populated } from './utils';
 
 // TODO: Add cache support: https://github.com/prettier/prettier/issues/6577
 // Make sure that new Prettier version or different Prettier config will invalidate cache.
@@ -19,7 +20,7 @@ export async function format(context: Context) {
   } catch (error) {
     throw new ToolError(
       'We were unable to format your codebase! Prettier failed with the following error:',
-      error.stdout
+      populated(error.stderr) ? error.stderr : error.stdout
     );
   }
 }
