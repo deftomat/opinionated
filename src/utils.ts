@@ -1,5 +1,6 @@
-import { cyan, green, red, yellow } from 'chalk';
+import { cyan, gray, green, red, yellow } from 'chalk';
 import ora from 'ora';
+import prettyMs from 'pretty-ms';
 import { parentPort, Worker, workerData } from 'worker_threads';
 import { MonorepoPackageContext } from './context';
 
@@ -17,13 +18,20 @@ export async function step<T>({
   run: (() => Promise<T>) | (() => T);
   success?: ((result: T) => string) | string;
 }): Promise<StepResult> {
+  const startAt = Date.now();
   const spinner = ora({ text: cyan(description) }).start();
   await delay(700);
 
   try {
     const result = await run();
+    const endAt = Date.now();
+
     const successText = typeof success === 'function' ? success(result) : success;
-    spinner.stopAndPersist({ symbol: green('✔'), text: green(successText) });
+    spinner.stopAndPersist({
+      symbol: green('✔'),
+      text: green(successText) + gray(` (${prettyMs(endAt - startAt)})`)
+    });
+
     return { result, hasWarning: false };
   } catch (error) {
     if (error.isToolError) {
@@ -56,6 +64,12 @@ export function debug(...args: any[]) {
 
 export function isNotNil<T>(value: T | null | undefined): value is T {
   return value != null;
+}
+
+export function populated(value: any): boolean {
+  if (value == null) return false;
+  if (Buffer.isBuffer(value)) return (value as Buffer).length > 0;
+  return value !== '';
 }
 
 export function renderOnePackageWarning(context: MonorepoPackageContext) {
