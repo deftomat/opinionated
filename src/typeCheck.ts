@@ -8,6 +8,7 @@ import {
   MonorepoPackageContext,
   PackageContext
 } from './context';
+import { allocateCore } from './cpu';
 import { ToolError } from './errors';
 
 // TODO: Use source files instead of builded files in monorepos!
@@ -63,9 +64,10 @@ async function runTscInAllPackages(context: MonorepoContext) {
 
 function withTscResult(context: Context) {
   const { projectRoot, cachePath } = context;
+  const binPath = `${projectRoot}/node_modules/.bin/tsc`;
 
   return async pkg => {
-    const binPath = `${projectRoot}/node_modules/.bin/tsc`;
+    const thread = await allocateCore();
 
     // TODO: Ensure that temporary directory is still necessary!
     // To be able to use "--incremental", we need to emit files into temporary directory.
@@ -94,6 +96,8 @@ function withTscResult(context: Context) {
       return { ...pkg, stdout: null };
     } catch (error) {
       return { ...pkg, stdout: error.stdout };
+    } finally {
+      thread.free();
     }
   };
 }
