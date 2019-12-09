@@ -36,10 +36,10 @@ export async function lint({ context, autoFix = false }: { context: Context; aut
       );
     }
     throw new ToolError(`ESLint failed with the following errors:`, formattedReport);
-  } catch (e) {
-    if (e.messageTemplate === 'file-not-found') return;
-    if (e.messageTemplate === 'all-files-ignored') return;
-    throw e;
+  } catch (error) {
+    if (error.messageTemplate === 'file-not-found') return;
+    if (error.messageTemplate === 'all-files-ignored') return;
+    throw error;
   }
 }
 

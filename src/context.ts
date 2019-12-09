@@ -102,8 +102,8 @@ export function describeContext(cwd: string): Context {
     }
 
     return packageContext;
-  } catch (e) {
-    if (e.code === 'ENOENT') {
+  } catch (error) {
+    if (error.code === 'ENOENT') {
       throw new ToolError(
         red(
           `No ${bold(
@@ -113,7 +113,7 @@ export function describeContext(cwd: string): Context {
       );
     }
 
-    throw Error(`Unexpected error:\n${e}`);
+    throw Error(`Unexpected error:\n${error}`);
   }
 }
 

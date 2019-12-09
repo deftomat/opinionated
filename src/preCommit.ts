@@ -81,8 +81,8 @@ function processFile({ context, linter }: { context: Context; linter: CLIEngine 
         try {
           const options = await prettier.resolveConfig(filename, { editorconfig: true });
           content = prettier.format(content, { ...options, parser: inferredParser });
-        } catch (e) {
-          return red(`Failed to run Prettier on ${bold(filename)}!\n`) + e;
+        } catch (error) {
+          return red(`Failed to run Prettier on ${bold(filename)}!\n`) + error;
         }
       }
 
@@ -90,8 +90,8 @@ function processFile({ context, linter }: { context: Context; linter: CLIEngine 
         await fs.writeFile(filename, content);
         await context.git.stageFile(filename);
       }
-    } catch (e) {
-      return e.toString();
+    } catch (error) {
+      return error.toString();
     }
   };
 }

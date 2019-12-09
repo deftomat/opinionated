@@ -206,7 +206,7 @@ export function createGitWorkflow(cwd: string) {
     try {
       await execGit(['rev-parse', '--git-dir']);
       return true;
-    } catch (e) {
+    } catch (error) {
       return false;
     }
   }

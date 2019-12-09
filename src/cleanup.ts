@@ -8,14 +8,14 @@ export function registerExitHandlers() {
   process.on('SIGINT', cleanup);
   process.on('SIGUSR1', cleanup);
   process.on('SIGUSR2', cleanup);
-  process.on('uncaughtException', e => {
+  process.on('uncaughtException', error => {
     console.error('UNCAUGHT EXCEPTION!');
-    console.error(e);
+    console.error(error);
     return cleanup;
   });
-  process.on('unhandledRejection', e => {
+  process.on('unhandledRejection', error => {
     console.error('UNHANDLED REJECTION!');
-    console.error(e);
+    console.error(error);
     return cleanup;
   });
 }

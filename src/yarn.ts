@@ -8,10 +8,10 @@ import { ToolError } from './errors';
 export async function checkLockIntegrity(context: Context) {
   try {
     await execa('yarn', ['check', '--integrity'], { cwd: context.projectRoot });
-  } catch (e) {
+  } catch (error) {
     throw new ToolError(
       'Integrity check failed with the following errors:',
-      e.stderr,
+      error.stderr,
       yellow('Error could be caused by an outdated yarn.lock.'),
       yellow(
         `Please check that all dependencies are correctly installed by running ${bold(
@@ -47,7 +47,7 @@ export async function fixLockDuplicates(context: Context) {
     if (originalLock !== fixedLock) {
       writeFileSync(lockPath, fixedLock);
     }
-  } catch (e) {
+  } catch (error) {
     throw new ToolError(
       `Failed to deduplicate dependencies in yarn.lock file!`,
       yellow(
