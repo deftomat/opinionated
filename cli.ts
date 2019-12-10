@@ -240,8 +240,10 @@ async function prepareContext({ autoStage }: { autoStage: boolean }): Promise<Co
   try {
     const context = describeContext(process.cwd());
 
+    await context.git.ensureMinimumGitVersion();
+
     if (!(await context.git.isGitRepository())) {
-      throw Error('Failed to run! Project must be the GIT repository.');
+      throw Error('Failed to run! Project must be the Git repository.');
     }
 
     const addedConfigs = await ensureConfigs({ context, autoStage });

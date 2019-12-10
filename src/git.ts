@@ -1,7 +1,7 @@
 /**
  * Partially copied from `lint-staged` project.
  */
-import { spawnSync } from 'child_process';
+
 import del from 'del';
 import execa from 'execa';
 import { resolve } from 'path';
@@ -212,9 +212,19 @@ export function createGitWorkflow(cwd: string) {
   }
 
   async function hasChanges(): Promise<boolean> {
-    const changed = spawnSync('git', ['status', '--porcelain', '-uall']);
-    if (changed.status !== 0) throw Error(changed.stderr.toString());
-    return changed.stdout.toString().trim() !== '';
+    const changed = await execGit(['status', '-uall', '--porcelain']);
+    return changed.trim() !== '';
+  }
+
+  async function ensureMinimumGitVersion(): Promise<void> {
+    const version = await execGit(['--version']);
+    const match = version.match(/([0-9]+).([0-9]+).([0-9]+)/);
+    if (match == null) throw Error('Failed to detect Git version!');
+
+    const [, major, minor] = match;
+    if (Number(major) < 2 || (Number(major) === 2 && Number(minor) < 13)) {
+      throw Error('Failed to run! Git >= 2.13.0 is required.');
+    }
   }
 
   return {
@@ -226,6 +236,7 @@ export function createGitWorkflow(cwd: string) {
     updateStash,
     exec: execGit,
     getStagedFiles,
-    hasChanges
+    hasChanges,
+    ensureMinimumGitVersion
   };
 }
