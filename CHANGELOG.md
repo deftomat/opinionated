@@ -1,3 +1,8 @@
+# 0.5.5
+
+- fix: use `array-simple` in `@typescript-eslint/array-type` rule
+- fix: ensure minimum Git version
+
 # 0.5.4
 
 - feat: measure check time
