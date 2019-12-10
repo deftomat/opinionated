@@ -43,7 +43,7 @@ const essentialRules = {
 const essentialTypescriptRules = {
   '@typescript-eslint/no-inferrable-types': 'error',
   '@typescript-eslint/prefer-function-type': 'error',
-  '@typescript-eslint/array-type': ['error', { default: 'array' }]
+  '@typescript-eslint/array-type': ['error', { default: 'array-simple' }]
 };
 
 /**
