@@ -63,36 +63,36 @@ async function ensurePrettierConfig(
 }
 
 // NOT ENABLED YET
-async function ensureEslintConfig(
-  context: Context,
-  autoStage: boolean
-): Promise<string | undefined> {
-  const { projectRoot, projectSpec, git } = context;
-  const possibleConfigFiles = [
-    '.eslintrc',
-    '.eslintrc.yaml',
-    '.eslintrc.yml',
-    '.eslintrc.json',
-    '.eslintrc.toml',
-    '.eslintrc.js',
-    'eslintrc.config.js'
-  ];
+// async function ensureEslintConfig(
+//   context: Context,
+//   autoStage: boolean
+// ): Promise<string | undefined> {
+//   const { projectRoot, projectSpec, git } = context;
+//   const possibleConfigFiles = [
+//     '.eslintrc',
+//     '.eslintrc.yaml',
+//     '.eslintrc.yml',
+//     '.eslintrc.json',
+//     '.eslintrc.toml',
+//     '.eslintrc.js',
+//     'eslintrc.config.js'
+//   ];
 
-  const spec = projectSpec.get();
+//   const spec = projectSpec.get();
 
-  const hasConfig =
-    spec.eslintConfig != null ||
-    possibleConfigFiles.some(filename => fs.existsSync(`${projectRoot}/${filename}`));
+//   const hasConfig =
+//     spec.eslintConfig != null ||
+//     possibleConfigFiles.some(filename => fs.existsSync(`${projectRoot}/${filename}`));
 
-  if (!hasConfig) {
-    projectSpec.set({
-      ...spec,
-      eslintConfig: { extends: ['./node_modules/@deftomat/opinionated/configs/eslint'] }
-    });
-    if (autoStage) await git.stageFile(projectSpec.path);
-    return 'ESLint';
-  }
-}
+//   if (!hasConfig) {
+//     projectSpec.set({
+//       ...spec,
+//       eslintConfig: { extends: ['./node_modules/@deftomat/opinionated/configs/eslint'] }
+//     });
+//     if (autoStage) await git.stageFile(projectSpec.path);
+//     return 'ESLint';
+//   }
+// }
 
 async function ensureNvmConfig(context: Context, autoStage: boolean): Promise<string | undefined> {
   const { projectRoot, git } = context;

@@ -13,6 +13,7 @@ import { containsTypeScript, runTypeCheck } from './src/typeCheck';
 import { renderOnePackageWarning, step, StepResult } from './src/utils';
 import { checkLockDuplicates, checkLockIntegrity, fixLockDuplicates, usesYarn } from './src/yarn';
 
+// eslint-disable-next-line
 const { version, description } = require('../package.json');
 
 registerExitHandlers();
@@ -207,9 +208,6 @@ async function handleCheckup(cmd) {
     missingChecks.delete(check.name);
     updateIncompleteChecks(context, missingChecks);
   }
-
-  // If any of the checks ends with warning
-  if (checks.some(check => check.result !== undefined && check.result.hasWarning)) return;
 }
 
 interface Check {
@@ -229,9 +227,8 @@ async function handleEnsureConfigs(cmd) {
     success: (addedConfigs: string[]) => {
       if (addedConfigs.length > 0) {
         return `The following configs have been added into project: ${addedConfigs.join(', ')}`;
-      } else {
-        return 'All configs are in place';
       }
+      return 'All configs are in place';
     }
   });
 }

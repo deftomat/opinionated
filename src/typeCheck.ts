@@ -41,7 +41,7 @@ async function runTscInAllPackages(context: MonorepoContext) {
 
   const results = await Promise.all(packages);
   if (!results.some(hasError)) return;
-  const length = results.filter(hasError).length;
+  const { length } = results.filter(hasError);
   const header =
     length === 1
       ? red(`1 package failed with the following TypeScript errors:`)

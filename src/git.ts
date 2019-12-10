@@ -191,9 +191,11 @@ export function createGitWorkflow(cwd: string) {
       }
     }
     // Clean up references
+    /* eslint-disable */
     workingCopyTree = null;
     indexTree = null;
     formattedIndexTree = null;
+    /* eslint-enable */
 
     return null;
   }

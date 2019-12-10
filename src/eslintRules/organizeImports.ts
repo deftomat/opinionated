@@ -19,7 +19,7 @@ module.exports = {
   },
   defaultOptions: [],
   create(context) {
-    let previousNode: any = undefined;
+    let previousNode: any;
 
     return {
       ImportDeclaration(node) {

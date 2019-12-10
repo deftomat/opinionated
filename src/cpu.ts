@@ -1,7 +1,7 @@
 import os from 'os';
 
 let currentlyRunning = 0;
-const queue: (() => void)[] = [];
+const queue: Array<() => void> = [];
 
 /**
  * "Allocates" one CPU core.
