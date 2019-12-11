@@ -57,7 +57,7 @@ async function runTscInAllPackages(context: MonorepoContext) {
         .join('');
       return yellow(`\n${decoration}\n${spacing}Package ${bold(name)}\n${decoration}\n\n`) + stdout;
     })
-    .join();
+    .join('');
 
   throw new ToolError(header, formatted);
 }
