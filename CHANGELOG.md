@@ -1,3 +1,7 @@
+# 0.5.6
+
+- fix: properly format type check error messages
+
 # 0.5.5
 
 - fix: use `array-simple` in `@typescript-eslint/array-type` rule
