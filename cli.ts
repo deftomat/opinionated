@@ -127,7 +127,7 @@ async function handleCheckup(cmd) {
         type: 'confirm',
         name: 'shouldRun',
         message: yellow(
-          'Selected operations may affect your uncommitted files! Do you want to continue?'
+          'Selected operations may affect your non-committed files! Do you want to continue?'
         ),
         default: false
       }
