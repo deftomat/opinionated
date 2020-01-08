@@ -12,7 +12,7 @@ and their configuration will differ more and more as you will copy it between mu
 ## Installation
 
 ```
-$ yarn add @deftomat/opinionated
+$ yarn add @deftomat/opinionated --dev
 ```
 
 ## Usage
@@ -99,7 +99,7 @@ Any rule specified in your configuration file will be merged over build-in confi
 
 ## Ignoring files and directories
 
-As tool is using ESLint and Prettier, you can follow their guides to ignore any file or directory.
+As tool is using ESLint and Prettier, you can follow their guidelines to ignore any file or directory.
 
 However, when tool detects, that there are no _.ignore_ file for these tools, then it tries to use `.opinionatedignore`
 file which will be applied to both ESLint and Prettier. If there is no `.opinionatedignore`, then `.gitignore` will be used.
