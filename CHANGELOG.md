@@ -1,3 +1,7 @@
+# 0.5.7
+
+- fix: typo in warning message
+
 # 0.5.6
 
 - fix: properly format type check error messages
