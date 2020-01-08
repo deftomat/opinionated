@@ -1,3 +1,7 @@
+# 0.5.8
+
+- fix: require Node v12
+
 # 0.5.7
 
 - fix: typo in warning message
