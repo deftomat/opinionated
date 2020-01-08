@@ -6,12 +6,17 @@
 !.vscode/extensions.json
 !.vscode/launch.json
 !.vscode/tasks.json
-.serverless
+
 node_modules
-coverage
-build
 yarn-error.log
 __diff_output__
+coverage
+.serverless
+dist
+build
+*.tsbuildinfo
+
+.DS_Store
 ```
 
 **tsconfig.json:**
@@ -22,14 +27,14 @@ __diff_output__
   "compilerOptions": {
     "baseUrl": "./",
     "isolatedModules": false,
-    "lib": ["es2017", "esnext.asynciterable", "es2018.promise"],
+    "lib": ["ES2019"],
     "jsx":"preserve",
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "target": "esnext"
+    "target": "ESNext"
   },
   "exclude": [
     "**/node_modules/",
@@ -58,7 +63,7 @@ __diff_output__
   "dependencies": {},
   "devDependencies": {
     "@deftomat/opinionated": "<PKG_VERSION>",
-    "husky": "^3.0.0"
+    "husky": "^4.0.0"
   },
   "workspaces": [
     "packages/*"
