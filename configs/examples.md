@@ -34,7 +34,7 @@ build
     "noEmit": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "target": "ESNext"
+    "target": "ES2019"
   },
   "exclude": [
     "**/node_modules/",
@@ -54,6 +54,9 @@ build
   "private": true,
   "scripts": {
     "checkup": "opinionated checkup"
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "husky": {
     "hooks": {

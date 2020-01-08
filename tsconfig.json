@@ -2,14 +2,14 @@
   "extends": "./configs/tsconfig.json",
   "compilerOptions": {
     "isolatedModules": false,
-    "lib": ["es2017"],
+    "lib": ["ES2019"],
     "jsx": "preserve",
     "module": "commonjs",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "sourceMap": false,
     "inlineSources": false,
-    "target": "esnext",
+    "target": "ES2019",
     "outDir": "./dist",
     "declaration": false
   },
