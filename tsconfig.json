@@ -1,17 +1,14 @@
 {
   "extends": "./configs/tsconfig.json",
   "compilerOptions": {
-    "isolatedModules": false,
     "lib": ["ES2019"],
-    "jsx": "preserve",
     "module": "commonjs",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "sourceMap": false,
-    "inlineSources": false,
     "target": "ES2019",
     "outDir": "./dist",
     "declaration": false
   },
-  "exclude": ["node_modules", "./configs", "./templates", "./dist"]
+  "exclude": ["node_modules", "./configs", "./dist"]
 }
