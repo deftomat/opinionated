@@ -1,3 +1,7 @@
+# 0.5.9
+
+- fix: do not generate source maps and declaration files during TypeScript checks
+
 # 0.5.8
 
 - fix: require Node v12
