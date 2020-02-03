@@ -16,7 +16,7 @@ export async function checkLockIntegrity(context: Context) {
       yellow(
         `Please check that all dependencies are correctly installed by running ${bold(
           'yarn install'
-        )}`
+        )}.`
       )
     );
   }
