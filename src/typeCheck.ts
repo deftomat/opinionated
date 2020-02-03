@@ -87,11 +87,24 @@ function withTscResult(context: Context) {
           '--allowUnreachableCode',
           'false',
           '--pretty',
-          '--noUnusedLocals'
+          '--noUnusedLocals',
+          '--removeComments',
+          '--declaration',
+          'false',
+          '--sourceMap',
+          'false',
+          '--inlineSourceMap',
+          'false',
+          '--inlineSources',
+          'false',
+          '--declarationMap',
+          'false',
+          '--diagnostics',
+          'false',
+          '--emitDeclarationOnly',
+          'false'
         ],
-        {
-          cwd: pkg.path
-        }
+        { cwd: pkg.path }
       );
       return { ...pkg, stdout: null };
     } catch (error) {
