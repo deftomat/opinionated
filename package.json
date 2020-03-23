@@ -1,6 +1,6 @@
 {
   "name": "@deftomat/opinionated",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },

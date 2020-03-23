@@ -1,3 +1,9 @@
+# 0.6.0
+
+- feat: upgrade to Prettier 2.0
+- feat: sort package.json entries with `prettier-plugin-package`
+- fix: step elapsed time
+
 # 0.5.9
 
 - fix: do not generate source maps and declaration files during TypeScript checks
