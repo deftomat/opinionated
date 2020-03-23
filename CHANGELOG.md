@@ -1,3 +1,7 @@
+# 0.6.1
+
+- fix: do not add trailing comma during formatting
+
 # 0.6.0
 
 - feat: upgrade to Prettier 2.0
