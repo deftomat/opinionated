@@ -52,24 +52,25 @@ build
   "name": "<NAME>",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "checkup": "opinionated checkup"
-  },
   "engines": {
     "node": ">=12.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "opinionated pre-commit"
-    }
+  "scripts": {
+    "checkup": "opinionated checkup"
   },
   "dependencies": {},
   "devDependencies": {
     "@deftomat/opinionated": "<PKG_VERSION>",
     "husky": "^4.0.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "opinionated pre-commit"
+    }
+  },
   "workspaces": [
     "packages/*"
   ]
 }
+
 ```

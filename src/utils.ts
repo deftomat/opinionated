@@ -12,24 +12,24 @@ export interface StepResult {
 export async function step<T>({
   description,
   run,
-  success = description
+  success = description,
 }: {
   description: string;
   run: (() => Promise<T>) | (() => T);
   success?: ((result: T) => string) | string;
 }): Promise<StepResult> {
-  const startAt = Date.now();
   const spinner = ora({ text: cyan(description) }).start();
   await delay(700);
 
   try {
+    const startAt = Date.now();
     const result = await run();
     const endAt = Date.now();
 
     const successText = typeof success === 'function' ? success(result) : success;
     spinner.stopAndPersist({
       symbol: green('✔'),
-      text: green(successText) + gray(` (${prettyMs(endAt - startAt)})`)
+      text: green(successText) + gray(` (${prettyMs(endAt - startAt)})`),
     });
 
     return { result, hasWarning: false };
