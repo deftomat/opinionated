@@ -16,6 +16,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
+    "checkup": "./bin/opinionated.js checkup",
     "prepublishOnly": "rm -rf dist && tsc",
     "watch": "tsc --watch"
   },
@@ -60,7 +61,13 @@
     "@types/configstore": "^4.0.0",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^12.12.14",
+    "husky": "^4.2.3",
     "typescript": "^3.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./bin/opinionated.js pre-commit"
+    }
   },
   "prettier": "./configs/prettier.config.js"
 }

@@ -20,15 +20,9 @@ registerExitHandlers();
 
 program.version(version, '-v, --vers', 'output the current version').description(description);
 
-program
-  .command('pre-commit')
-  .description('Run pre-commit checks.')
-  .action(handlePreCommit);
+program.command('pre-commit').description('Run pre-commit checks.').action(handlePreCommit);
 
-program
-  .command('checkup')
-  .description('Check up the project.')
-  .action(handleCheckup);
+program.command('checkup').description('Check up the project.').action(handleCheckup);
 
 program
   .command('ensure-configs')

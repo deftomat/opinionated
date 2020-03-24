@@ -116,10 +116,7 @@ function withTscResult(context: Context) {
 }
 
 function getTypeScriptPackages(packagesPath: string) {
-  return fs
-    .readdirSync(packagesPath)
-    .map(toPackage(packagesPath))
-    .filter(isTypeScriptPackage);
+  return fs.readdirSync(packagesPath).map(toPackage(packagesPath)).filter(isTypeScriptPackage);
 }
 
 function hasError({ stdout }) {

@@ -30,7 +30,7 @@ export async function lint({ context, autoFix = false }: { context: Context; aut
       cachePath: context.cachePath,
       projectRoot: context.projectRoot,
       packageRoot: context.packageRoot,
-      autoFix,
+      autoFix
     });
 
     if (errorCount === 0 && warningCount === 0) return;
@@ -61,7 +61,7 @@ function getEslintReport({
   cachePath,
   projectRoot,
   packageRoot,
-  autoFix,
+  autoFix
 }: {
   ignorePath: string | undefined;
   cachePath: string;
@@ -78,7 +78,7 @@ function getEslintReport({
     cacheLocation: `${cachePath}/checkup-eslintcache`,
     cwd: projectRoot,
     fix: autoFix,
-    baseConfig: checkupLintConfig,
+    baseConfig: checkupLintConfig
   });
 
   const report = linter.executeOnFiles([`${packageRoot || projectRoot}/**/*.?(js|jsx|ts|tsx)`]);

@@ -12,8 +12,9 @@ export async function format(context: Context) {
   const binPath = `${projectRoot}/node_modules/.bin/prettier`;
 
   const ignorePath = findPrettierIgnoreFile(context);
-  const target = `${packageRoot ||
-    projectRoot}/**/*.?(js|jsx|ts|tsx|html|css|scss|json|yml|graphql|md|mdx|gql)`;
+  const target = `${
+    packageRoot || projectRoot
+  }/**/*.?(js|jsx|ts|tsx|html|css|scss|json|yml|graphql|md|mdx|gql)`;
   try {
     const ignoreOption = ignorePath ? ['--ignore-path', ignorePath] : [];
     await execa(binPath, ['--write', target, ...ignoreOption], { cwd: projectRoot });

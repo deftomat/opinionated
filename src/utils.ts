@@ -12,7 +12,7 @@ export interface StepResult {
 export async function step<T>({
   description,
   run,
-  success = description,
+  success = description
 }: {
   description: string;
   run: (() => Promise<T>) | (() => T);
@@ -29,7 +29,7 @@ export async function step<T>({
     const successText = typeof success === 'function' ? success(result) : success;
     spinner.stopAndPersist({
       symbol: green('✔'),
-      text: green(successText) + gray(` (${prettyMs(endAt - startAt)})`),
+      text: green(successText) + gray(` (${prettyMs(endAt - startAt)})`)
     });
 
     return { result, hasWarning: false };
