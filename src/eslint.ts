@@ -6,15 +6,6 @@ import { checkupLintConfig } from './eslintConfig';
 import { defaultIgnorePattern, findEslintIgnoreFile } from './ignore';
 import { asWorkerMaster, runAsWorkerSlave } from './utils';
 
-// Declares static CLIEngine.getFormatter method as described here:
-// https://eslint.org/docs/developer-guide/nodejs-api#cliengine-getformatter
-// TODO: Remove after @types/eslint will be fixed!!!
-declare module 'eslint' {
-  namespace CLIEngine {
-    const getFormatter: (format?: string) => CLIEngine.Formatter;
-  }
-}
-
 /**
  * Runs a full lint on a given project.
  *
