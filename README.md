@@ -82,7 +82,7 @@ To integrate the tool into your project, we recommend the following `packages.js
     }
   },
   "devDependencies": {
-    "@deftomat/opinionated": "^0.5.0",
+    "@deftomat/opinionated": "^0.6.0",
     "husky": "^4.0.0"
   }
   ...
