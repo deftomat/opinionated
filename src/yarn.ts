@@ -5,7 +5,10 @@ import { fixDuplicates, listDuplicates } from 'yarn-deduplicate';
 import { Context } from './context';
 import { ToolError } from './errors';
 
-export async function checkLockIntegrity(context: Context) {
+/**
+ * Trows when the `yarn.lock` doesn't match the `node_modules` content.
+ */
+export async function checkLockIntegrity(context: Context): Promise<void> {
   try {
     await execa('yarn', ['check', '--integrity'], { cwd: context.projectRoot });
   } catch (error) {
@@ -22,7 +25,10 @@ export async function checkLockIntegrity(context: Context) {
   }
 }
 
-export async function checkLockDuplicates(context: Context) {
+/**
+ * Throws when the `yarn.lock` contains dependencies, which can be deduplicated.
+ */
+export async function checkLockDuplicates(context: Context): Promise<void> {
   const duplicates = listDuplicates(readFileSync(`${context.projectRoot}/yarn.lock`).toString());
   if (duplicates.length === 0) return;
 
@@ -38,7 +44,15 @@ export async function checkLockDuplicates(context: Context) {
   );
 }
 
-export async function fixLockDuplicates(context: Context) {
+/**
+ * Deduplicate dependencies in `yarn.lock` and run `yarn install` if necessary.
+ *
+ * Use `autoInstall=false` to skip `yarn install`.
+ */
+export async function fixLockDuplicates(
+  context: Context,
+  { autoInstall = true } = {}
+): Promise<void> {
   const lockPath = `${context.projectRoot}/yarn.lock`;
   try {
     const originalLock = readFileSync(lockPath).toString();
@@ -46,6 +60,10 @@ export async function fixLockDuplicates(context: Context) {
 
     if (originalLock !== fixedLock) {
       writeFileSync(lockPath, fixedLock);
+
+      if (autoInstall) {
+        await execa('yarn', ['install'], { cwd: context.projectRoot });
+      }
     }
   } catch (error) {
     throw new ToolError(
@@ -59,6 +77,9 @@ export async function fixLockDuplicates(context: Context) {
   }
 }
 
-export function usesYarn(context: Context) {
+/**
+ * Return TRUE, when the given context uses Yarn.
+ */
+export function usesYarn(context: Context): boolean {
   return existsSync(`${context.projectRoot}/yarn.lock`);
 }

@@ -12,7 +12,10 @@ import { asWorkerMaster, runAsWorkerSlave } from './utils';
  * If a context defines a specific sub-package of a monorepo,
  * then ESLint will run only in that sub-package.
  */
-export async function lint({ context, autoFix = false }: { context: Context; autoFix?: boolean }) {
+export async function lint(
+  context: Context,
+  { autoFix = false }: { autoFix?: boolean } = {}
+): Promise<void> {
   try {
     const runEslint = asWorkerMaster<typeof getEslintReport>(__filename);
 

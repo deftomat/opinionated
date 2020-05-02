@@ -12,8 +12,8 @@ export class ToolError extends Error {
     this.messages = messages;
   }
 
-  get isToolError() {
-    return true;
+  static is(error: any): error is ToolError {
+    return error instanceof ToolError;
   }
 }
 
@@ -31,7 +31,7 @@ export class ToolWarning extends Error {
     this.messages = messages;
   }
 
-  get isToolWarning() {
-    return true;
+  static is(error: any): error is ToolWarning {
+    return error instanceof ToolWarning;
   }
 }

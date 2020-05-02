@@ -1,6 +1,9 @@
 import fs from 'fs';
 import { Context } from './context';
 
+/**
+ * Returns filename of ignore file for ESLint.
+ */
 export function findEslintIgnoreFile({ projectRoot, projectSpec }: Context): string | undefined {
   const eslintIgnore = `${projectRoot}/.eslintignore`;
   const opinionatedIgnore = `${projectRoot}/.opinionatedignore`;
@@ -12,6 +15,9 @@ export function findEslintIgnoreFile({ projectRoot, projectSpec }: Context): str
   if (fs.existsSync(gitIgnore)) return gitIgnore;
 }
 
+/**
+ * Returns filename of ignore file for Prettier.
+ */
 export function findPrettierIgnoreFile({ projectRoot }: Context): string | undefined {
   const prettierIgnore = `${projectRoot}/.prettierignore`;
   const opinionatedIgnore = `${projectRoot}/.opinionatedignore`;

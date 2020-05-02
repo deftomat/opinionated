@@ -13,7 +13,7 @@ export async function allocateCore(): Promise<{ free: () => void }> {
     if (startNext) startNext();
   };
 
-  if (currentlyRunning <= os.cpus().length) {
+  if (currentlyRunning < os.cpus().length) {
     currentlyRunning++;
     return Promise.resolve({ free });
   }

@@ -128,11 +128,11 @@ export const checkupLintConfig = toLintConfig({
   plugins: ['react', 'import']
 });
 
-export const editorLintConfig = toLintConfig({
-  rules: strictRules,
-  tsOnlyRules: strictTypescriptRules,
-  plugins: ['react', 'import']
-});
+// export const editorLintConfig = toLintConfig({
+//   rules: strictRules,
+//   tsOnlyRules: strictTypescriptRules,
+//   plugins: ['react', 'import']
+// });
 
 function toLintConfig({
   rules,

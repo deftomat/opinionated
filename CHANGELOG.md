@@ -1,3 +1,9 @@
+# 0.6.2
+
+- feat: export programmatic API for each Opinionated feature
+- feat: auto install deduplicated dependencies if possible
+- fix: CPU allocation during TypeScript checks
+
 # 0.6.1
 
 - fix: do not add trailing comma during formatting

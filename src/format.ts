@@ -7,7 +7,10 @@ import { populated } from './utils';
 // TODO: Add cache support: https://github.com/prettier/prettier/issues/6577
 // Make sure that new Prettier version or different Prettier config will invalidate cache.
 
-export async function format(context: Context) {
+/**
+ * Formats all supported files in the given context.
+ */
+export async function format(context: Context): Promise<void> {
   const { projectRoot, packageRoot } = context;
   const binPath = `${projectRoot}/node_modules/.bin/prettier`;
 

@@ -165,14 +165,14 @@ async function handleCheckup(cmd) {
     name: 'eslint',
     enabled: requiredChecks.includes('eslint') && autoFix,
     description: 'Linting & auto-fixing via ESLint',
-    run: () => lint({ context, autoFix: true })
+    run: () => lint(context, { autoFix: true })
   });
 
   checks.push({
     name: 'eslint',
     enabled: requiredChecks.includes('eslint') && !autoFix,
     description: 'Linting via ESLint',
-    run: () => lint({ context, autoFix: false })
+    run: () => lint(context, { autoFix: false })
   });
 
   checks.push({
@@ -217,7 +217,7 @@ async function handleEnsureConfigs(cmd) {
 
   await step({
     description: 'Checking necessary configs',
-    run: () => ensureConfigs({ context }),
+    run: () => ensureConfigs(context),
     success: (addedConfigs: string[]) => {
       if (addedConfigs.length > 0) {
         return `The following configs have been added into project: ${addedConfigs.join(', ')}`;
@@ -237,7 +237,7 @@ async function prepareContext({ autoStage }: { autoStage: boolean }): Promise<Co
       throw Error('Failed to run! Project must be the Git repository.');
     }
 
-    const addedConfigs = await ensureConfigs({ context, autoStage });
+    const addedConfigs = await ensureConfigs(context, { autoStage });
     if (addedConfigs.length > 0)
       console.info(
         gray(`[The following configs have been added into project: ${addedConfigs.join(', ')}]`)

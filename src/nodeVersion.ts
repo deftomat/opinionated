@@ -3,7 +3,10 @@ import fs from 'fs';
 import { Context } from './context';
 import { ToolError } from './errors';
 
-export async function checkNodeVersion(context: Context) {
+/**
+ * Throws when the current Node version doesn't match version specified in `.nvmrc` file.
+ */
+export async function checkNodeVersion(context: Context): Promise<void> {
   const { projectRoot } = context;
   const nvmrcPath = `${projectRoot}/.nvmrc`;
 

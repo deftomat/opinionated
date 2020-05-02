@@ -52,6 +52,9 @@ export function isPackageContext(context: Context): context is PackageContext {
   return context.type === 'package';
 }
 
+/**
+ * Returns the tool context for the given working directory.
+ */
 export function describeContext(cwd: string): Context {
   try {
     const specConnector = toSpecConnector(`${cwd}/package.json`);

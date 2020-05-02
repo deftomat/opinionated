@@ -15,12 +15,18 @@ import { ToolError } from './errors';
 // Otherwise, your monorepo could contains an outdated build of package and
 // any other package which depends on it will be type checked against this outdated declarations.
 
-export function containsTypeScript(context: Context) {
+/**
+ * Return TRUE when the given context contains `tsconfig.json` file.
+ */
+export function containsTypeScript(context: Context): boolean {
   if (isMonorepoContext(context)) return getTypeScriptPackages(context.packagesPath).length > 0;
   return isTypeScriptPackage({ path: context.packageRoot });
 }
 
-export async function runTypeCheck(context: Context) {
+/**
+ * Runs TypeScript checks in the given context.
+ */
+export async function runTypeCheck(context: Context): Promise<void> {
   if (isMonorepoContext(context)) return runTscInAllPackages(context);
   return runTscInPackage(context);
 }

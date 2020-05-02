@@ -9,6 +9,9 @@ import { debug } from './utils';
 
 export type GitWorkflow = ReturnType<typeof createGitWorkflow>;
 
+/**
+ * Provides Git related operations.
+ */
 export function createGitWorkflow(cwd: string) {
   let workingCopyTree: any = null;
   let indexTree: any = null;

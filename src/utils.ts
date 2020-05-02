@@ -3,6 +3,7 @@ import ora from 'ora';
 import prettyMs from 'pretty-ms';
 import { parentPort, Worker, workerData } from 'worker_threads';
 import { MonorepoPackageContext } from './context';
+import { ToolError, ToolWarning } from './errors';
 
 export interface StepResult {
   readonly result?: any;
@@ -34,12 +35,12 @@ export async function step<T>({
 
     return { result, hasWarning: false };
   } catch (error) {
-    if (error.isToolError) {
+    if (ToolError.is(error)) {
       const [first, ...rest] = error.messages;
       spinner.stopAndPersist({ symbol: red('❌ '), text: red(first) });
       rest.forEach(e => console.error(e));
       throw process.exit(1);
-    } else if (error.isToolWarning) {
+    } else if (ToolWarning.is(error)) {
       const [first, ...rest] = error.messages;
       spinner.stopAndPersist({ symbol: yellow('⚠️ '), text: yellow(first) });
       rest.forEach(e => console.error(e));

@@ -9,7 +9,10 @@ import { preCommitLintConfig } from './eslintConfig';
 import { defaultIgnorePattern, findEslintIgnoreFile, findPrettierIgnoreFile } from './ignore';
 import { isNotNil } from './utils';
 
-export async function preCommit(context: Context) {
+/**
+ * Runs pre-commit operations on staged files.
+ */
+export async function preCommit(context: Context): Promise<void> {
   const { git } = context;
 
   const staged = await git.getStagedFiles();

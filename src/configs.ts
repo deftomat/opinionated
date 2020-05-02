@@ -1,13 +1,13 @@
 import fs from 'fs';
 import { Context } from './context';
 
-export function ensureConfigs({
-  context,
-  autoStage = false
-}: {
-  context: Context;
-  autoStage?: boolean;
-}): Promise<string[]> {
+/**
+ * Ensures that project has the necessary configs in place.
+ */
+export function ensureConfigs(
+  context: Context,
+  { autoStage = false }: { autoStage?: boolean } = {}
+): Promise<string[]> {
   return Promise.all([
     ensureEditorConfig(context, autoStage),
     ensurePrettierConfig(context, autoStage),
