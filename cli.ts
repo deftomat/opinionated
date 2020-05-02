@@ -14,7 +14,7 @@ import { renderOnePackageWarning, step, StepResult } from './src/utils';
 import { checkLockDuplicates, checkLockIntegrity, fixLockDuplicates, usesYarn } from './src/yarn';
 
 // eslint-disable-next-line
-const { version, description } = require('../package.json');
+const { version, description } = require('../../package.json');
 
 registerExitHandlers();
 

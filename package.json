@@ -1,6 +1,6 @@
 {
   "name": "@deftomat/opinionated",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
@@ -9,16 +9,18 @@
   "repository": "github:deftomat/opinionated",
   "author": "Tomas Szabo <tomas.szabo@deftomat.com>",
   "homepage": "https://github.com/deftomat/opinionated",
+  "main": "./dist/cjs/index.js",
   "bin": {
     "opinionated": "./bin/opinionated.js"
   },
+  "module": "./dist/esm/index.js",
   "engines": {
     "node": ">=12.0.0"
   },
   "scripts": {
     "checkup": "./bin/opinionated.js checkup",
-    "prepublishOnly": "rm -rf dist && tsc",
-    "watch": "tsc --watch"
+    "prepublishOnly": "rm -rf dist && tsc && tsc --project tsconfig.cjs.json",
+    "watch": "tsc --project tsconfig.cjs.json --watch"
   },
   "files": [
     "bin",
@@ -64,6 +66,7 @@
     "husky": "^4.2.3",
     "typescript": "^3.7.2"
   },
+  "typings": "./dist/esm/index.d.ts",
   "husky": {
     "hooks": {
       "pre-commit": "./bin/opinionated.js pre-commit"

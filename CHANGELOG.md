@@ -1,3 +1,7 @@
+# 0.6.3
+
+- fix: programmatic API
+
 # 0.6.2
 
 - feat: export programmatic API for each Opinionated feature
