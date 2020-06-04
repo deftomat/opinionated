@@ -1,6 +1,7 @@
-import { cyan, gray, green, red, yellow } from 'chalk';
+import { bold, cyan, gray, green, red, yellow } from 'chalk';
 import ora from 'ora';
 import prettyMs from 'pretty-ms';
+import stripAnsi from 'strip-ansi';
 import { parentPort, Worker, workerData } from 'worker_threads';
 import { MonorepoPackageContext } from './context';
 import { ToolError, ToolWarning } from './errors';
@@ -77,18 +78,34 @@ export function renderOnePackageWarning(context: MonorepoPackageContext) {
   const packageName: string =
     context.packageSpec.get().name || context.packageRoot.split('/').pop();
 
-  const padding = new Array(32 - packageName.length).fill(' ').join('');
+  const banner = asBanner([
+    bold(`Running in "${packageName}" sub-package...\n`),
+    `Please keep in mind that to check the whole project,`,
+    `you need to run this command in project's root directory!`
+  ]);
 
   console.warn('');
-  console.warn(yellow.inverse('                                                               '));
-  console.warn(yellow.inverse('                                                               '));
-  console.warn(yellow.inverse.bold(`   Running in "${packageName}" sub-package...${padding}`));
-  console.warn(yellow.inverse('                                                               '));
-  console.warn(yellow.inverse(`   Please keep in mind that to check the whole project,        `));
-  console.warn(yellow.inverse(`   you need to run this command in project's root directory!   `));
-  console.warn(yellow.inverse('                                                               '));
-  console.warn(yellow.inverse('                                                               '));
+  console.warn(yellow.inverse(banner));
   console.warn('');
+}
+
+function asBanner(lines: string[]): string {
+  const normalized = lines.flatMap(line => line.split('\n')).map(line => ` ${line.trim()} `);
+
+  const maxLength = normalized
+    .map(stripAnsi)
+    .map(line => line.length)
+    .reduce((max, length) => (max > length ? max : length), 0);
+
+  const content = normalized
+    .map(line => line + spacing(maxLength - stripAnsi(line).length))
+    .join('\n');
+
+  return `${spacing(maxLength)}\n${content}\n${spacing(maxLength)}`;
+}
+
+function spacing(length: number): string {
+  return Array.from(Array(length)).fill(' ').join('');
 }
 
 export function asWorkerMaster<T extends Function>(workerFilename: string): AlwaysPromiseResult<T> {

@@ -1,3 +1,7 @@
+# 0.6.4
+
+- fix: warning banner rendering
+
 # 0.6.3
 
 - fix: programmatic API
