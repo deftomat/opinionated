@@ -1,3 +1,7 @@
+# 0.6.5
+
+- feat: always check JS files during TypeScript check
+
 # 0.6.4
 
 - fix: warning banner rendering
