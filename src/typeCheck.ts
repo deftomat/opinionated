@@ -85,6 +85,8 @@ function withTscResult(context: Context) {
       await execa(
         binPath,
         [
+          '--allowJs',
+          '--checkJs',
           '--noEmit',
           'false',
           '--outDir',
