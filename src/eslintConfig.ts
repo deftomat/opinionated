@@ -55,7 +55,21 @@ const strictRules = {
   'no-cond-assign': 'error',
   'no-console': [
     'error',
-    { allow: ['warn', 'error', 'info', 'time', 'timeEnd', 'timeLog', 'debug', 'clear'] }
+    {
+      allow: [
+        'warn',
+        'error',
+        'info',
+        'time',
+        'timeEnd',
+        'timeLog',
+        'debug',
+        'clear',
+        'group',
+        'groupCollapsed',
+        'groupEnd'
+      ]
+    }
   ],
   'no-constant-condition': ['error', { checkLoops: false }],
   'no-debugger': 'error',
@@ -96,6 +110,9 @@ const strictRules = {
   'symbol-description': 'error',
   'import/no-deprecated': 'warn',
   'react/jsx-key': ['error', { checkFragmentShorthand: true }]
+  // Enable the following JSX rules to fix false-positive errors when no-unused-vars rule is used!
+  // 'react/jsx-uses-vars': 'error',
+  // 'react/jsx-uses-react': 'error'
 };
 
 /**

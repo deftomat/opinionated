@@ -1,3 +1,7 @@
+# 0.6.6
+
+- feat: allow to use `console.group*` statements
+
 # 0.6.5
 
 - feat: always check JS files during TypeScript check
