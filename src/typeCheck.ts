@@ -88,7 +88,7 @@ function withTscResult(context: Context) {
           '--allowJs',
           '--checkJs',
           '--noEmit',
-          'false',
+          'true',
           '--outDir',
           outDir,
           '--incremental',

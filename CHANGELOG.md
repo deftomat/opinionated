@@ -1,3 +1,7 @@
+# 0.7.1
+
+- fix: reduce cache size
+
 # 0.7.0
 
 - feat: major TypeScript, ESLint, YarnDeduplicate and Prettier upgrade
