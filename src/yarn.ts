@@ -29,7 +29,10 @@ export async function checkLockIntegrity(context: Context): Promise<void> {
  * Throws when the `yarn.lock` contains dependencies, which can be deduplicated.
  */
 export async function checkLockDuplicates(context: Context): Promise<void> {
-  const duplicates = listDuplicates(readFileSync(`${context.projectRoot}/yarn.lock`).toString());
+  const duplicates = listDuplicates(
+    readFileSync(`${context.projectRoot}/yarn.lock`).toString(),
+    {}
+  );
   if (duplicates.length === 0) return;
 
   throw new ToolError(

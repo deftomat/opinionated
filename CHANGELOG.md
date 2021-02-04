@@ -1,3 +1,7 @@
+# 0.7.0
+
+- feat: major TypeScript, ESLint, YarnDeduplicate and Prettier upgrade
+
 # 0.6.6
 
 - feat: allow to use `console.group*` statements

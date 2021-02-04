@@ -10,5 +10,5 @@
     "outDir": "./dist/esm",
     "declaration": true
   },
-  "exclude": ["node_modules", "./configs", "./dist"]
+  "exclude": ["node_modules", "./configs", "./dist", "./bin"]
 }

@@ -125,8 +125,6 @@ const strictRules = {
 const strictTypescriptRules = {
   '@typescript-eslint/prefer-for-of': 'error',
   '@typescript-eslint/adjacent-overload-signatures': 'error',
-  '@typescript-eslint/class-name-casing': ['error', { allowUnderscorePrefix: true }],
-  '@typescript-eslint/interface-name-prefix': ['error', { prefixWithI: 'never' }],
   '@typescript-eslint/no-empty-interface': 'error',
   '@typescript-eslint/no-require-imports': 'error',
   '@typescript-eslint/no-useless-constructor': 'error',
