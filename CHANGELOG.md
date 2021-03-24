@@ -1,3 +1,7 @@
+# 0.7.2
+
+- fix: disable `no-new` ESLint rule because AWS-CDK is breaking this rule extensively
+
 # 0.7.1
 
 - fix: reduce cache size

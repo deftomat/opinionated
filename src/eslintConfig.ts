@@ -92,7 +92,7 @@ const strictRules = {
   'no-extra-bind': 'error',
   'no-implied-eval': 'error',
   // 'no-invalid-this': 'error', // not working on class properties: https://github.com/typescript-eslint/typescript-eslint/issues/491
-  'no-new': 'error',
+  // 'no-new': 'error', // disabled because AWS-CDK is breaking this rule extensively
   'no-new-wrappers': 'error',
   'no-return-await': 'error',
   'no-script-url': 'error',
