@@ -1,4 +1,5 @@
 import { bold, red, yellow } from 'chalk';
+import { createHash } from 'crypto';
 import execa from 'execa';
 import fs from 'fs';
 import {
@@ -75,11 +76,10 @@ function withTscResult(context: Context) {
   return async pkg => {
     const thread = await allocateCore();
 
-    // TODO: Ensure that temporary directory is still necessary!
-    // To be able to use "--incremental", we need to emit files into temporary directory.
-    // Once https://github.com/microsoft/TypeScript/issues/30661 will be fixed, then
-    // this temporary directory could be remove.
-    const outDir = `${cachePath}/tsc/${pkg.path.split('/').join('_')}`;
+    const outDir = `${cachePath}/tsc/${createHash('sha1')
+      .update(pkg.path)
+      .digest()
+      .toString('hex')}`;
 
     try {
       await execa(
@@ -97,19 +97,12 @@ function withTscResult(context: Context) {
           '--pretty',
           '--noUnusedLocals',
           '--removeComments',
-          '--declaration',
-          'false',
           '--sourceMap',
-          'false',
-          '--inlineSourceMap',
-          'false',
-          '--inlineSources',
-          'false',
           '--declarationMap',
           'false',
           '--diagnostics',
           'false',
-          '--emitDeclarationOnly',
+          '--assumeChangesOnlyAffectDirectDependencies',
           'false'
         ],
         { cwd: pkg.path }

@@ -1,3 +1,17 @@
+# 0.8.0
+
+- BREAKING: drop support for Node 12
+- feat: TypeScript 4.4 support
+- fix: disable `react/jsx-key` as it raises false-positive errors in components like this:
+  ```tsx
+  <Dictionary>
+    {[
+      ['Source', data.articleOne.sources.join(', ')],
+      ['Published', <LocaleDate date={data.articleOne.appearedAt} />]
+    ]}
+  </Dictionary>
+  ```
+
 # 0.7.2
 
 - fix: disable `no-new` ESLint rule because AWS-CDK is breaking this rule extensively

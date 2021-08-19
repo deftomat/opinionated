@@ -108,8 +108,19 @@ const strictRules = {
   'prefer-spread': 'error',
   'require-yield': 'error',
   'symbol-description': 'error',
-  'import/no-deprecated': 'warn',
-  'react/jsx-key': ['error', { checkFragmentShorthand: true }]
+  'import/no-deprecated': 'warn'
+
+  // Disabled as it raises false-positive error in components like this:
+  //
+  //   <Dictionary>
+  //     {[
+  //        ['Source', data.articleOne.sources.join(', ')],
+  //        ['Published', <LocaleDate date={data.articleOne.appearedAt} />],
+  //     ]}
+  //    </Dictionary>
+  //
+  // 'react/jsx-key': ['error', { checkFragmentShorthand: true }]
+
   // Enable the following JSX rules to fix false-positive errors when no-unused-vars rule is used!
   // 'react/jsx-uses-vars': 'error',
   // 'react/jsx-uses-react': 'error'

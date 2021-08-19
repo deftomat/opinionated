@@ -26,15 +26,15 @@ build
   "extends": "@deftomat/opinionated/configs/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "isolatedModules": false,
-    "lib": ["ES2019"],
+    "isolatedModules": true,
+    "lib": ["ES2020"],
     "jsx":"preserve",
     "module": "ESNext",
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "target": "ES2019"
+    "target": "ES2020"
   },
   "exclude": [
     "**/node_modules/",

@@ -1,7 +1,7 @@
 {
   "extends": "./configs/tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2019"],
+    "lib": ["ES2020"],
     "module": "ESNext",
     "moduleResolution": "node",
     "skipLibCheck": true,
