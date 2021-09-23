@@ -1,3 +1,7 @@
+# 0.8.1
+
+- fix: disable `strictPropertyInitialization` tsconfig option
+
 # 0.8.0
 
 - BREAKING: drop support for Node 12

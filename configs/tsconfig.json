@@ -8,6 +8,7 @@
     "pretty": true,
     "strict": true,
     "useUnknownInCatchVariables": false,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "strictPropertyInitialization": false
   }
 }
