@@ -62,7 +62,6 @@ Command will add the following configs if necessary:
 
 - [EditorConfig](https://editorconfig.org/) - Makes sure that every developer use the same indentation, charset, EOF, etc.
 - [Prettier](https://prettier.io/) - Makes sure that every supported editor use the same auto-formatting rules.
-- [.nvmrc](https://github.com/nvm-sh/nvm) - Allows to automatically switch to the correct NodeJS version by running `nvm use` command in project's directory.
 
 > 💡 This command is usually not necessary as every other command runs it by default.
 

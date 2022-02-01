@@ -1,3 +1,7 @@
+# 0.9.0
+
+- feat: stop generating `.nvmrc` file in favor of Volta.
+
 # 0.8.1
 
 - fix: disable `strictPropertyInitialization` tsconfig option

@@ -6,7 +6,6 @@ import { ensureConfigs } from './src/configs';
 import { Context, describeContext, isMonorepoPackageContext } from './src/context';
 import { lint } from './src/eslint';
 import { format } from './src/format';
-import { checkNodeVersion } from './src/nodeVersion';
 import { preCommit } from './src/preCommit';
 import { getIncompleteChecks, updateIncompleteChecks } from './src/store';
 import { containsTypeScript, runTypeCheck } from './src/typeCheck';
@@ -65,12 +64,6 @@ async function handleCheckup(cmd) {
       name: 'requiredChecks',
       message: 'Select checkup operations:',
       choices: [
-        {
-          checked: incompleteChecks.size > 0 ? incompleteChecks.has('engine') : true,
-          name: `${bold('Engine check')} - ensures that you are using the right NodeJS version`,
-          short: 'Engine',
-          value: 'engine'
-        },
         usesYarn(context) && {
           checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
           name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
@@ -132,13 +125,6 @@ async function handleCheckup(cmd) {
   updateIncompleteChecks(context, requiredChecks);
 
   const checks: Check[] = [];
-
-  checks.push({
-    name: 'engine',
-    enabled: requiredChecks.includes('engine'),
-    description: 'Checking NodeJS version',
-    run: () => checkNodeVersion(context)
-  });
 
   checks.push({
     name: 'integrity',

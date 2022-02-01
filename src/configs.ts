@@ -10,9 +10,8 @@ export function ensureConfigs(
 ): Promise<string[]> {
   return Promise.all([
     ensureEditorConfig(context, autoStage),
-    ensurePrettierConfig(context, autoStage),
+    ensurePrettierConfig(context, autoStage)
     // ensureEslintConfig(context, autoStage),
-    ensureNvmConfig(context, autoStage)
   ]).then(results => results.filter(isString));
 }
 
@@ -93,19 +92,6 @@ async function ensurePrettierConfig(
 //     return 'ESLint';
 //   }
 // }
-
-async function ensureNvmConfig(context: Context, autoStage: boolean): Promise<string | undefined> {
-  const { projectRoot, git } = context;
-  const configPath = `${projectRoot}/.nvmrc`;
-
-  if (!fs.existsSync(configPath)) {
-    const version = process.versions.node;
-    const normalized = version.substring(0, version.indexOf('.')) + '\n';
-    fs.writeFileSync(configPath, normalized);
-    if (autoStage) await git.stageFile(configPath);
-    return 'NVM';
-  }
-}
 
 const defaultEditorConfig = `# http://EditorConfig.org
 
