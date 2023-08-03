@@ -1,3 +1,7 @@
+# 0.9.1
+
+- feat: upgrade to Prettier v3 & TypeScript v5
+
 # 0.9.0
 
 - feat: stop generating `.nvmrc` file in favor of Volta.

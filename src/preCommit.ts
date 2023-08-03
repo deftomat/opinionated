@@ -83,7 +83,7 @@ function processFile({ context, linter }: { context: Context; linter: CLIEngine 
       if (shouldPrettify) {
         try {
           const options = await prettier.resolveConfig(filename, { editorconfig: true });
-          content = prettier.format(content, { ...options, parser: inferredParser });
+          content = await prettier.format(content, { ...options, parser: inferredParser });
         } catch (error) {
           return red(`Failed to run Prettier on ${bold(filename)}!\n`) + error;
         }
