@@ -1,9 +1,9 @@
-import { CLIEngine } from 'eslint';
+import { ESLint } from 'eslint';
 import { isMainThread } from 'worker_threads';
 import { Context } from './context';
 import { ToolError, ToolWarning } from './errors';
 import { checkupLintConfig } from './eslintConfig';
-import { defaultIgnorePattern, findEslintIgnoreFile } from './ignore';
+import { findEslintIgnoreFile } from './ignore';
 import { asWorkerMaster, runAsWorkerSlave } from './utils';
 
 /**
@@ -29,8 +29,10 @@ export async function lint(
 
     if (errorCount === 0 && warningCount === 0) return;
 
-    const formatter = CLIEngine.getFormatter('stylish');
-    const formattedReport = formatter(results);
+    const eslint = new ESLint();
+
+    const formatter = await eslint.loadFormatter('stylish');
+    const formattedReport = await formatter.format(results);
 
     if (errorCount === 0) {
       throw new ToolWarning(
@@ -50,7 +52,7 @@ if (!isMainThread) {
   runAsWorkerSlave(getEslintReport);
 }
 
-function getEslintReport({
+async function getEslintReport({
   ignorePath,
   cachePath,
   projectRoot,
@@ -63,11 +65,10 @@ function getEslintReport({
   packageRoot: string | undefined;
   autoFix: boolean;
 }) {
-  const linter = new CLIEngine({
+  const linter = new ESLint({
     ignore: true,
     ignorePath,
     useEslintrc: true,
-    ignorePattern: defaultIgnorePattern,
     cache: true,
     cacheLocation: `${cachePath}/checkup-eslintcache`,
     cwd: projectRoot,
@@ -75,8 +76,18 @@ function getEslintReport({
     baseConfig: checkupLintConfig
   });
 
-  const report = linter.executeOnFiles([`${packageRoot || projectRoot}/**/*.?(js|jsx|ts|tsx)`]);
+  const report = await linter.lintFiles([`${packageRoot || projectRoot}/**/*.?(js|jsx|ts|tsx)`]);
 
-  if (autoFix) CLIEngine.outputFixes(report);
-  return report;
+  if (autoFix) ESLint.outputFixes(report);
+
+  const { errorCount, warningCount } = report.reduce(
+    (result, current) => {
+      result.errorCount += current.errorCount;
+      result.warningCount += current.warningCount;
+      return result;
+    },
+    { errorCount: 0, warningCount: 0 }
+  );
+
+  return { errorCount, warningCount, results: report };
 }

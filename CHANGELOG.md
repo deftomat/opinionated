@@ -1,3 +1,11 @@
+# 1.0.0
+
+- feat: replace yarn@1 with npm@10
+- feat: upgrade all dependencies
+- feat: support for npm monorepos
+- feat: upgrade to TypeScript v5.2
+- fix: remove `prettier-plugin-package` until Prettier v3 is supported [pr](https://github.com/shellscape/prettier-plugin-package/pull/23)
+
 # 0.9.1
 
 - feat: upgrade to Prettier v3 & TypeScript v5

@@ -1,12 +1,12 @@
 import { bold, red } from 'chalk';
-import { CLIEngine } from 'eslint';
+import { ESLint } from 'eslint';
 import { promises as fs } from 'fs';
 import prettier from 'prettier';
 import { onProcessExit } from './cleanup';
 import { Context } from './context';
 import { ToolError } from './errors';
 import { preCommitLintConfig } from './eslintConfig';
-import { defaultIgnorePattern, findEslintIgnoreFile, findPrettierIgnoreFile } from './ignore';
+import { findEslintIgnoreFile, findPrettierIgnoreFile } from './ignore';
 import { isNotNil } from './utils';
 
 /**
@@ -48,7 +48,7 @@ export async function preCommit(context: Context): Promise<void> {
  *
  * Otherwise, returns `Error` when a given file cannot be processed.
  */
-function processFile({ context, linter }: { context: Context; linter: CLIEngine }) {
+function processFile({ context, linter }: { context: Context; linter: ESLint }) {
   return async (filename: string): Promise<string | undefined> => {
     try {
       const prettierFileInfo = await prettier.getFileInfo(filename, {
@@ -72,10 +72,21 @@ function processFile({ context, linter }: { context: Context; linter: CLIEngine 
       let content = original;
 
       if (shouldLint) {
-        const { errorCount, warningCount, results } = linter.executeOnText(content, filename);
+        const results = await linter.lintText(content, {
+          filePath: filename
+        });
+
+        const { errorCount, warningCount } = results.reduce(
+          (result, current) => {
+            result.errorCount += current.errorCount;
+            result.warningCount += current.warningCount;
+            return result;
+          },
+          { errorCount: 0, warningCount: 0 }
+        );
 
         if (errorCount !== 0 || warningCount !== 0) {
-          return linter.getFormatter('stylish')(results);
+          return (await linter.loadFormatter('stylish')).format(results);
         }
         content = results[0].output || content;
       }
@@ -99,12 +110,11 @@ function processFile({ context, linter }: { context: Context; linter: CLIEngine 
   };
 }
 
-function createLinter(context: Context): CLIEngine {
-  return new CLIEngine({
+function createLinter(context: Context): ESLint {
+  return new ESLint({
     ignore: true,
     ignorePath: findEslintIgnoreFile(context),
     useEslintrc: false,
-    ignorePattern: defaultIgnorePattern,
     cwd: context.projectRoot,
     fix: true,
     baseConfig: preCommitLintConfig

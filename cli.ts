@@ -11,6 +11,13 @@ import { getIncompleteChecks, updateIncompleteChecks } from './src/store';
 import { containsTypeScript, runTypeCheck } from './src/typeCheck';
 import { renderOnePackageWarning, step, StepResult } from './src/utils';
 import { checkLockDuplicates, checkLockIntegrity, fixLockDuplicates, usesYarn } from './src/yarn';
+import {
+  checkNpmAudit,
+  checkNpmLockIntegrity,
+  fixNpmAudit,
+  fixNpmLockDuplicates,
+  usesNpm
+} from './src/npm';
 
 // eslint-disable-next-line
 const { version, description } = require('../../package.json');
@@ -78,6 +85,26 @@ async function handleCheckup(cmd) {
           short: 'Duplicates',
           value: 'duplicates'
         },
+        usesNpm(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
+          name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
+          short: 'Integrity',
+          value: 'integrity'
+        },
+        usesNpm(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('duplicates') : true,
+          name: `${bold(
+            'Dependency duplicates check'
+          )} - ensures no unnecessary dependency duplicates`,
+          short: 'Duplicates',
+          value: 'duplicates'
+        },
+        usesNpm(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('audit') : true,
+          name: `${bold('Packages audit')} - ensures all packages are up to date`,
+          short: 'Audit',
+          value: 'audit'
+        },
         {
           checked: incompleteChecks.size > 0 ? incompleteChecks.has('eslint') : true,
           name: `${bold('Linter')} - runs ESLint`,
@@ -126,26 +153,53 @@ async function handleCheckup(cmd) {
 
   const checks: Check[] = [];
 
-  checks.push({
-    name: 'integrity',
-    enabled: requiredChecks.includes('integrity'),
-    description: 'Checking yarn.lock integrity',
-    run: () => checkLockIntegrity(context)
-  });
+  if (usesYarn(context)) {
+    checks.push({
+      name: 'integrity',
+      enabled: requiredChecks.includes('integrity'),
+      description: 'Checking yarn.lock integrity',
+      run: () => checkLockIntegrity(context)
+    });
+    checks.push({
+      name: 'duplicates',
+      enabled: requiredChecks.includes('duplicates') && autoFix,
+      description: 'Removing dependency duplicates',
+      run: () => fixLockDuplicates(context)
+    });
+    checks.push({
+      name: 'duplicates',
+      enabled: requiredChecks.includes('duplicates') && !autoFix,
+      description: 'Detecting dependency duplicates',
+      run: () => checkLockDuplicates(context)
+    });
+  }
 
-  checks.push({
-    name: 'duplicates',
-    enabled: requiredChecks.includes('duplicates') && autoFix,
-    description: 'Removing dependency duplicates',
-    run: () => fixLockDuplicates(context)
-  });
-
-  checks.push({
-    name: 'duplicates',
-    enabled: requiredChecks.includes('duplicates') && !autoFix,
-    description: 'Detecting dependency duplicates',
-    run: () => checkLockDuplicates(context)
-  });
+  if (usesNpm(context)) {
+    checks.push({
+      name: 'integrity',
+      enabled: requiredChecks.includes('integrity'),
+      description: 'Checking package-lock.json integrity',
+      run: () => checkNpmLockIntegrity(context)
+    });
+    checks.push({
+      name: 'duplicates',
+      enabled: requiredChecks.includes('duplicates'),
+      description: 'Removing dependency duplicates',
+      run: () => fixNpmLockDuplicates(context)
+    });
+    checks.push({
+      name: 'audit',
+      enabled: requiredChecks.includes('audit') && autoFix,
+      description: 'Fixing the npm audit',
+      run: () => fixNpmAudit(context)
+    });
+    checks.push({
+      name: 'audit',
+      enabled: requiredChecks.includes('audit') && !autoFix,
+      description: 'Checking the npm audit',
+      run: () => checkNpmAudit(context)
+    });
+  }
 
   checks.push({
     name: 'eslint',
