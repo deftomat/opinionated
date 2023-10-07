@@ -1,3 +1,9 @@
+# 1.1.1
+
+- chore: upgrade dependencies + NodeJS
+- feat: fix mjs modules
+- feat: import package.json asynchronously
+
 # 1.1.0
 
 - chore: upgrade all dependencies
