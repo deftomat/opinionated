@@ -1,3 +1,8 @@
+# 1.1.0
+
+- chore: upgrade all dependencies
+- feat: convert to ESM
+
 # 1.0.0
 
 - feat: replace yarn@1 with npm@10
