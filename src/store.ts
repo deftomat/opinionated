@@ -1,5 +1,5 @@
 import Configstore from 'configstore';
-import { Context } from './context';
+import { Context } from './context.js';
 
 const incompleteChecksTTL = 60 * 60 * 1000;
 const incompleteChecksKey = 'incompleteChecks';

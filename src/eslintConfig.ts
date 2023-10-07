@@ -1,4 +1,4 @@
-import { defaultIgnorePattern } from './ignore';
+import { defaultIgnorePattern } from './ignore.js';
 import { ESLint } from 'eslint';
 
 /**

@@ -1,9 +1,11 @@
-import { bold, red } from 'chalk';
-import findUp from 'find-up';
-import fs from 'fs';
-import path from 'path';
-import { ToolError } from './errors';
-import { createGitWorkflow, GitWorkflow } from './git';
+import chalk from 'chalk';
+import { findUpSync } from 'find-up';
+import fs from 'node:fs';
+import path from 'node:path';
+import { ToolError } from './errors.js';
+import { GitWorkflow, createGitWorkflow } from './git.js';
+
+const { bold, red } = chalk;
 
 export type Context = MonorepoContext | MonorepoPackageContext | PackageContext;
 
@@ -84,7 +86,7 @@ export function describeContext(cwd: string): Context {
       return context;
     }
 
-    const parent = findUp.sync('package.json', { cwd: `${cwd}/../` });
+    const parent = findUpSync('package.json', { cwd: `${cwd}/../` });
     if (parent == null) return packageContext;
 
     const parentSpecConnector = toSpecConnector(parent);

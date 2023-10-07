@@ -1,10 +1,12 @@
-import { bold, cyan, gray, green, red, yellow } from 'chalk';
+import chalk from 'chalk';
 import ora from 'ora';
 import prettyMs from 'pretty-ms';
 import stripAnsi from 'strip-ansi';
-import { parentPort, Worker, workerData } from 'worker_threads';
-import { MonorepoPackageContext } from './context';
-import { ToolError, ToolWarning } from './errors';
+import { parentPort, Worker, workerData } from 'node:worker_threads';
+import { MonorepoPackageContext } from './context.js';
+import { ToolError, ToolWarning } from './errors.js';
+
+const { bold, cyan, gray, green, red, yellow } = chalk;
 
 export interface StepResult {
   readonly result?: any;

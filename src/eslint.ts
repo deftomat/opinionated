@@ -1,10 +1,11 @@
 import { ESLint } from 'eslint';
-import { isMainThread } from 'worker_threads';
-import { Context } from './context';
-import { ToolError, ToolWarning } from './errors';
-import { checkupLintConfig } from './eslintConfig';
-import { findEslintIgnoreFile } from './ignore';
-import { asWorkerMaster, runAsWorkerSlave } from './utils';
+import { isMainThread } from 'node:worker_threads';
+import { Context } from './context.js';
+import { ToolError, ToolWarning } from './errors.js';
+import { checkupLintConfig } from './eslintConfig.js';
+import { findEslintIgnoreFile } from './ignore.js';
+import { asWorkerMaster, runAsWorkerSlave } from './utils.js';
+import { fileURLToPath } from 'node:url';
 
 /**
  * Runs a full lint on a given project.
@@ -17,7 +18,7 @@ export async function lint(
   { autoFix = false }: { autoFix?: boolean } = {}
 ): Promise<void> {
   try {
-    const runEslint = asWorkerMaster<typeof getEslintReport>(__filename);
+    const runEslint = asWorkerMaster<typeof getEslintReport>(fileURLToPath(import.meta.url));
 
     const { results, errorCount, warningCount } = await runEslint({
       ignorePath: findEslintIgnoreFile(context),

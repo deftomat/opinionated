@@ -1,3 +1,1 @@
-const { editorLintConfig } = require('../dist/src/eslintConfig');
-
-module.exports = editorLintConfig;
+export { editorLintConfig } from '../dist/src/eslintConfig';

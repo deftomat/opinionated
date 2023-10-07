@@ -1,4 +1,4 @@
-import os from 'os';
+import os from 'node:os';
 
 let currentlyRunning = 0;
 const queue: Array<() => void> = [];

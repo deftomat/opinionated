@@ -1,26 +1,34 @@
-import { bold, gray, red, yellow } from 'chalk';
-import program from 'commander';
+import chalk from 'chalk';
+import { program } from 'commander';
 import inquirer from 'inquirer';
-import { registerExitHandlers } from './src/cleanup';
-import { ensureConfigs } from './src/configs';
-import { Context, describeContext, isMonorepoPackageContext } from './src/context';
-import { lint } from './src/eslint';
-import { format } from './src/format';
-import { preCommit } from './src/preCommit';
-import { getIncompleteChecks, updateIncompleteChecks } from './src/store';
-import { containsTypeScript, runTypeCheck } from './src/typeCheck';
-import { renderOnePackageWarning, step, StepResult } from './src/utils';
-import { checkLockDuplicates, checkLockIntegrity, fixLockDuplicates, usesYarn } from './src/yarn';
+import { registerExitHandlers } from './src/cleanup.js';
+import { ensureConfigs } from './src/configs.js';
+import { Context, describeContext, isMonorepoPackageContext } from './src/context.js';
+import { lint } from './src/eslint.js';
+import { format } from './src/format.js';
+import { preCommit } from './src/preCommit.js';
+import { getIncompleteChecks, updateIncompleteChecks } from './src/store.js';
+import { containsTypeScript, runTypeCheck } from './src/typeCheck.js';
+import { renderOnePackageWarning, step, StepResult } from './src/utils.js';
+import {
+  checkLockDuplicates,
+  checkLockIntegrity,
+  fixLockDuplicates,
+  usesYarn
+} from './src/yarn.js';
 import {
   checkNpmAudit,
   checkNpmLockIntegrity,
   fixNpmAudit,
   fixNpmLockDuplicates,
   usesNpm
-} from './src/npm';
+} from './src/npm.js';
 
-// eslint-disable-next-line
-const { version, description } = require('../../package.json');
+// @ts-ignore eslint-disable-next-line
+import packagejson from '../../package.json' assert { type: 'json' };
+const { version, description } = packagejson;
+
+const { bold, gray, red, yellow } = chalk;
 
 registerExitHandlers();
 

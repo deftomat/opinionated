@@ -2,10 +2,10 @@
  * Partially copied from `lint-staged` project.
  */
 
-import del from 'del';
-import execa from 'execa';
-import { resolve } from 'path';
-import { debug } from './utils';
+import { deleteAsync } from 'del';
+import { execa } from 'execa';
+import { resolve } from 'node:path';
+import { debug } from './utils.js';
 
 export type GitWorkflow = ReturnType<typeof createGitWorkflow>;
 
@@ -186,7 +186,7 @@ export function createGitWorkflow(cwd: string) {
          * These hunks are coming from formatters so we'll just delete them since they are irrelevant.
          */
         try {
-          const rejFiles = await del(['*.rej']);
+          const rejFiles = await deleteAsync(['*.rej']);
           debug('Deleted files and folders:\n', rejFiles.join('\n'));
         } catch (delErr) {
           debug('Error deleting *.rej files', delErr);

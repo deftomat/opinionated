@@ -1,13 +1,15 @@
-import { bold, red } from 'chalk';
+import chalk from 'chalk';
 import { ESLint } from 'eslint';
-import { promises as fs } from 'fs';
+import { promises as fs } from 'node:fs';
 import prettier from 'prettier';
-import { onProcessExit } from './cleanup';
-import { Context } from './context';
-import { ToolError } from './errors';
-import { preCommitLintConfig } from './eslintConfig';
-import { findEslintIgnoreFile, findPrettierIgnoreFile } from './ignore';
-import { isNotNil } from './utils';
+import { onProcessExit } from './cleanup.js';
+import { Context } from './context.js';
+import { ToolError } from './errors.js';
+import { preCommitLintConfig } from './eslintConfig.js';
+import { findEslintIgnoreFile, findPrettierIgnoreFile } from './ignore.js';
+import { isNotNil } from './utils.js';
+
+const { bold, red } = chalk;
 
 /**
  * Runs pre-commit operations on staged files.

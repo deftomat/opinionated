@@ -1,9 +1,11 @@
-import { bold, underline, yellow } from 'chalk';
-import execa from 'execa';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import chalk from 'chalk';
+import { execa } from 'execa';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fixDuplicates, listDuplicates } from 'yarn-deduplicate';
-import { Context } from './context';
-import { ToolError } from './errors';
+import { Context } from './context.js';
+import { ToolError } from './errors.js';
+
+const { bold, underline, yellow } = chalk;
 
 /**
  * Trows when the `yarn.lock` doesn't match the `node_modules` content.

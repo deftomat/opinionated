@@ -1,8 +1,10 @@
-import { bold, yellow } from 'chalk';
-import execa from 'execa';
-import { existsSync } from 'fs';
-import { Context } from './context';
-import { ToolError } from './errors';
+import chalk from 'chalk';
+import { execa } from 'execa';
+import { existsSync } from 'node:fs';
+import { Context } from './context.js';
+import { ToolError } from './errors.js';
+
+const { bold, yellow } = chalk;
 
 /**
  * Trows when the `package-lock.json` doesn't match the `node_modules` content.
