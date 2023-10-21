@@ -1,16 +1,9 @@
-# 1.1.1
-
-- chore: upgrade dependencies + NodeJS
-- feat: fix mjs modules
-- feat: import package.json asynchronously
-
-# 1.1.0
-
-- chore: upgrade all dependencies
-- feat: convert to ESM
-
 # 1.0.0
 
+- chore: upgrade dependencies + NodeJS
+- feat: convert to ESM
+- feat: fix mjs modules
+- feat: import package.json asynchronously
 - feat: replace yarn@1 with npm@10
 - feat: upgrade all dependencies
 - feat: support for npm monorepos

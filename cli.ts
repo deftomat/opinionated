@@ -54,10 +54,10 @@ import('../../package.json', { assert: { type: 'json' } }).then(
 
     program.parse(process.argv);
     if (!process.argv.slice(2).length) {
-      program.outputHelp(red);
+      program.outputHelp({ error: true });
     }
 
-    async function handlePreCommit(cmd) {
+    async function handlePreCommit() {
       const context = await prepareContext({ autoStage: true });
 
       await step({
@@ -66,7 +66,7 @@ import('../../package.json', { assert: { type: 'json' } }).then(
       });
     }
 
-    async function handleCheckup(cmd) {
+    async function handleCheckup() {
       const context = await prepareContext({ autoStage: false });
       if (isMonorepoPackageContext(context)) renderOnePackageWarning(context);
 
@@ -138,7 +138,9 @@ import('../../package.json', { assert: { type: 'json' } }).then(
           message: 'Do you want to auto-fix any issues if possible?',
           default: false,
           when: ({ requiredChecks }) =>
-            requiredChecks.includes('eslint') || requiredChecks.includes('duplicates')
+            requiredChecks.includes('eslint') ||
+            requiredChecks.includes('duplicates') ||
+            requiredChecks.includes('audit')
         }
       ]);
 
