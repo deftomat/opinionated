@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { Context } from './context';
+import fs from 'node:fs';
+import { Context } from './context.js';
 
 /**
  * Returns filename of ignore file for ESLint.

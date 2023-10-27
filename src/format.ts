@@ -1,8 +1,8 @@
-import execa from 'execa';
-import { Context } from './context';
-import { ToolError } from './errors';
-import { findPrettierIgnoreFile } from './ignore';
-import { populated } from './utils';
+import { execa } from 'execa';
+import { Context } from './context.js';
+import { ToolError } from './errors.js';
+import { findPrettierIgnoreFile } from './ignore.js';
+import { populated } from './utils.js';
 
 // TODO: Add cache support: https://github.com/prettier/prettier/issues/6577
 // Make sure that new Prettier version or different Prettier config will invalidate cache.

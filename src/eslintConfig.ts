@@ -1,3 +1,6 @@
+import { defaultIgnorePattern } from './ignore.js';
+import { ESLint } from 'eslint';
+
 /**
  * ⚠️ !!!STOP: ESSENTIAL RULES MUST BE AUTOFIXABLE !!! ⚠️
  * When adding rules here, you need to make sure they are compatible with
@@ -168,7 +171,7 @@ function toLintConfig({
   rules: object;
   tsOnlyRules: object;
   plugins: string[];
-}) {
+}): ESLint.ConfigData {
   return {
     root: true,
     env: {
@@ -190,6 +193,7 @@ function toLintConfig({
       }
     },
     plugins,
+    ignorePatterns: [defaultIgnorePattern],
     overrides: [
       {
         files: ['*.ts?(x)'],

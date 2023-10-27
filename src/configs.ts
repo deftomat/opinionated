@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { Context } from './context';
+import fs from 'node:fs';
+import { Context } from './context.js';
 
 /**
  * Ensures that project has the necessary configs in place.
@@ -45,7 +45,7 @@ async function ensurePrettierConfig(
     '.prettierrc.json',
     '.prettierrc.toml',
     '.prettierrc.js',
-    'prettier.config.js'
+    'prettier.config.mjs'
   ];
 
   const spec = projectSpec.get();
@@ -55,7 +55,7 @@ async function ensurePrettierConfig(
     possibleConfigFiles.some(filename => fs.existsSync(`${projectRoot}/${filename}`));
 
   if (!hasConfig) {
-    projectSpec.set({ ...spec, prettier: '@deftomat/opinionated/configs/prettier.config.js' });
+    projectSpec.set({ ...spec, prettier: '@deftomat/opinionated/configs/prettier.config.mjs' });
     if (autoStage) await git.stageFile(projectSpec.path);
     return 'Prettier';
   }

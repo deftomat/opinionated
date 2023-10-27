@@ -1,16 +1,18 @@
-import { bold, red, yellow } from 'chalk';
-import { createHash } from 'crypto';
-import execa from 'execa';
-import fs from 'fs';
+import chalk from 'chalk';
+import { createHash } from 'node:crypto';
+import { execa } from 'execa';
+import fs from 'node:fs';
 import {
   Context,
   isMonorepoContext,
   MonorepoContext,
   MonorepoPackageContext,
   PackageContext
-} from './context';
-import { allocateCore } from './cpu';
-import { ToolError } from './errors';
+} from './context.js';
+import { allocateCore } from './cpu.js';
+import { ToolError } from './errors.js';
+
+const { bold, red, yellow } = chalk;
 
 // TODO: Use source files instead of builded files in monorepos!
 // Otherwise, your monorepo could contains an outdated build of package and

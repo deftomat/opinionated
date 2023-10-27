@@ -15,6 +15,12 @@ and their configuration will differ more and more as you will copy it between mu
 $ yarn add @deftomat/opinionated --dev
 ```
 
+or
+
+```
+$ npm install @deftomat/opinionated --include=dev
+```
+
 ## Usage
 
 Tool provides the following commands:
@@ -73,16 +79,12 @@ To integrate the tool into your project, we recommend the following `packages.js
 {
   ...
   "scripts": {
-    "checkup": "opinionated checkup"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "opinionated pre-commit"
-    }
+    "checkup": "opinionated checkup",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "@deftomat/opinionated": "^0.6.0",
-    "husky": "^4.0.0"
+    "@deftomat/opinionated": "^1.0.0",
+    "husky": "^8.0.0"
   }
   ...
 }

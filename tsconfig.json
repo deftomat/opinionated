@@ -1,14 +1,15 @@
 {
   "extends": "./configs/tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2020"],
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "skipLibCheck": true,
     "sourceMap": false,
-    "target": "ES2019",
+    "target": "ES2021",
     "outDir": "./dist/esm",
-    "declaration": true
+    "declaration": false,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "./configs", "./dist", "./bin"]
 }
