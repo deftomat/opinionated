@@ -1,3 +1,7 @@
+# 1.0.1
+
+- fix: add config files to exports
+
 # 1.0.0
 
 - chore: upgrade dependencies + NodeJS
