@@ -76,8 +76,8 @@
   "typings": "./dist/esm/index.d.ts",
   "prettier": "./configs/prettier.config.mjs",
   "volta": {
-    "node": "20.8.0",
-    "npm": "10.2.0"
+    "node": "20.9.0",
+    "npm": "10.2.2"
   },
   "type": "module"
 }
