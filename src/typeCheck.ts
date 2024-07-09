@@ -1,7 +1,8 @@
 import chalk from 'chalk';
-import { createHash } from 'node:crypto';
 import { execa } from 'execa';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
+import { basename } from 'node:path';
 import {
   Context,
   isMonorepoContext,
@@ -22,7 +23,7 @@ const { bold, red, yellow } = chalk;
  * Return TRUE when the given context contains `tsconfig.json` file.
  */
 export function containsTypeScript(context: Context): boolean {
-  if (isMonorepoContext(context)) return getTypeScriptPackages(context.packagesPath).length > 0;
+  if (isMonorepoContext(context)) return getTypeScriptPackages(context.packages).length > 0;
   return isTypeScriptPackage({ path: context.packageRoot });
 }
 
@@ -45,8 +46,7 @@ async function runTscInPackage(context: PackageContext | MonorepoPackageContext)
 }
 
 async function runTscInAllPackages(context: MonorepoContext) {
-  const { packagesPath } = context;
-  const packages = getTypeScriptPackages(packagesPath).map(withTscResult(context));
+  const packages = getTypeScriptPackages(context.packages).map(withTscResult(context));
 
   const results = await Promise.all(packages);
   if (!results.some(hasError)) return;
@@ -118,16 +118,12 @@ function withTscResult(context: Context) {
   };
 }
 
-function getTypeScriptPackages(packagesPath: string) {
-  return fs.readdirSync(packagesPath).map(toPackage(packagesPath)).filter(isTypeScriptPackage);
+function getTypeScriptPackages(packages: string[]) {
+  return packages.map(pkg => ({ name: basename(pkg), path: pkg })).filter(isTypeScriptPackage);
 }
 
 function hasError({ stdout }) {
   return stdout != null;
-}
-
-function toPackage(packagesPath: string) {
-  return name => ({ name, path: `${packagesPath}/${name}` });
 }
 
 function isTypeScriptPackage({ path }: { path: string }) {

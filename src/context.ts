@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { findUpSync } from 'find-up';
+import { globSync } from 'glob';
 import fs from 'node:fs';
 import path from 'node:path';
 import { ToolError } from './errors.js';
@@ -13,7 +14,12 @@ export interface MonorepoContext {
   readonly type: 'monorepo';
   readonly projectRoot: string;
   readonly projectSpec: SpecConnector;
-  readonly packagesPath: string;
+
+  /**
+   * List of packages in the monorepo (absolute path).
+   */
+  readonly packages: string[];
+
   readonly packageRoot: undefined;
   readonly packageSpec: undefined;
   readonly cachePath: string;
@@ -24,7 +30,6 @@ export interface MonorepoPackageContext {
   readonly type: 'monorepo-package';
   readonly projectRoot: string;
   readonly projectSpec: SpecConnector;
-  readonly packagesPath: string;
   readonly packageRoot: string;
   readonly packageSpec: SpecConnector;
   readonly cachePath: string;
@@ -35,7 +40,6 @@ export interface PackageContext {
   readonly type: 'package';
   readonly projectRoot: string;
   readonly projectSpec: SpecConnector;
-  readonly packagesPath: undefined;
   readonly packageRoot: string;
   readonly packageSpec: SpecConnector;
   readonly cachePath: string;
@@ -65,7 +69,6 @@ export function describeContext(cwd: string): Context {
       type: 'package',
       projectRoot: cwd,
       projectSpec: specConnector,
-      packagesPath: undefined,
       packageRoot: cwd,
       packageSpec: specConnector,
       cachePath: toCachePath(cwd),
@@ -77,7 +80,7 @@ export function describeContext(cwd: string): Context {
         type: 'monorepo',
         projectRoot: cwd,
         projectSpec: specConnector,
-        packagesPath: `${cwd}/packages`,
+        packages: listProjectPackages(cwd),
         packageRoot: undefined,
         packageSpec: undefined,
         cachePath: toCachePath(cwd),
@@ -97,7 +100,6 @@ export function describeContext(cwd: string): Context {
         type: 'monorepo-package',
         projectRoot: parentRoot,
         projectSpec: parentSpecConnector,
-        packagesPath: `${parentRoot}/packages`,
         packageRoot: cwd,
         packageSpec: specConnector,
         cachePath: toCachePath(parentRoot),
@@ -142,4 +144,21 @@ function toSpecConnector(path: string): SpecConnector {
 
 function toCachePath(projectRoot: string): string {
   return `${projectRoot}/node_modules/.cache/opinionated`;
+}
+
+/**
+ * Returns a list of packages and their absolute paths in the project.
+ *
+ * If the project is a part of the monorepo, then it returns all packages.
+ * Otherwise, it returns the project itself as a package.
+ */
+function listProjectPackages(projectRoot: string): string[] {
+  const manifest = JSON.parse(fs.readFileSync(`${projectRoot}/package.json`).toString());
+
+  if (manifest.workspaces == null) return [projectRoot];
+
+  return (manifest.workspaces as string[])
+    .flatMap(pattern => globSync(pattern, { cwd: projectRoot, absolute: true }))
+    .filter(root => fs.lstatSync(root).isDirectory())
+    .filter(root => fs.existsSync(`${root}/package.json`));
 }

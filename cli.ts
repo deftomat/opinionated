@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import { program } from 'commander';
 import inquirer from 'inquirer';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { registerExitHandlers } from './src/cleanup.js';
 import { ensureConfigs } from './src/configs.js';
 import { Context, describeContext, isMonorepoPackageContext } from './src/context.js';
@@ -24,9 +26,11 @@ import {
   usesYarn
 } from './src/yarn.js';
 
-// @ts-ignore
-import('../../package.json', { assert: { type: 'json' } }).then(
-  ({ default: { version, description } }) => {
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+readFile(`${__dirname}/../../package.json`)
+  .then(body => JSON.parse(body.toString()))
+  .then(({ version, description }) => {
     const { bold, gray, red, yellow } = chalk;
 
     registerExitHandlers();
@@ -298,5 +302,4 @@ import('../../package.json', { assert: { type: 'json' } }).then(
         throw process.exit(1);
       }
     }
-  }
-);
+  });

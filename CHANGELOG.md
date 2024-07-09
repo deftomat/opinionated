@@ -1,3 +1,7 @@
+# 1.1.3
+
+- feat: support workspaces with variable directory structure
+
 # 1.0.1
 
 - fix: add config files to exports
