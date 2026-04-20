@@ -42,6 +42,12 @@ Command is designed to be opaque and hassle free, so theoretically, pre-commit c
 $ opinionated checkup
 ```
 
+To run checkup non-interactively (without any prompts), use:
+
+```
+$ opinionated checkup -y
+```
+
 Checkup command allows you to keep your project in top shape.
 
 Command includes:

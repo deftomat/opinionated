@@ -39,7 +39,11 @@ readFile(`${__dirname}/../../package.json`)
 
     program.command('pre-commit').description('Run pre-commit checks.').action(handlePreCommit);
 
-    program.command('checkup').description('Check up the project.').action(handleCheckup);
+    program
+      .command('checkup')
+      .option('-y, --yes', 'run with defaults without any prompts')
+      .description('Check up the project.')
+      .action(handleCheckup);
 
     program
       .command('ensure-configs')
@@ -70,85 +74,100 @@ readFile(`${__dirname}/../../package.json`)
       });
     }
 
-    async function handleCheckup() {
+    async function handleCheckup(cmd: { yes?: boolean }) {
       const context = await prepareContext({ autoStage: false });
       if (isMonorepoPackageContext(context)) renderOnePackageWarning(context);
 
       const incompleteChecks = getIncompleteChecks(context);
-
-      const { requiredChecks, autoFix } = await inquirer.prompt([
-        {
-          type: 'checkbox',
-          name: 'requiredChecks',
-          message: 'Select checkup operations:',
-          choices: [
-            usesYarn(context) && {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
-              name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
-              short: 'Integrity',
-              value: 'integrity'
-            },
-            usesYarn(context) && {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('duplicates') : true,
-              name: `${bold(
-                'Dependency duplicates check'
-              )} - ensures no unnecessary dependency duplicates`,
-              short: 'Duplicates',
-              value: 'duplicates'
-            },
-            usesNpm(context) && {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
-              name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
-              short: 'Integrity',
-              value: 'integrity'
-            },
-            usesNpm(context) && {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('duplicates') : true,
-              name: `${bold(
-                'Dependency duplicates check'
-              )} - ensures no unnecessary dependency duplicates`,
-              short: 'Duplicates',
-              value: 'duplicates'
-            },
-            usesNpm(context) && {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('audit') : true,
-              name: `${bold('Packages audit')} - ensures all packages are up to date`,
-              short: 'Audit',
-              value: 'audit'
-            },
-            {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('eslint') : true,
-              name: `${bold('Linter')} - runs ESLint`,
-              short: 'Linter',
-              value: 'eslint'
-            },
-            containsTypeScript(context) && {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('typescript') : true,
-              name: `${bold('TypeScript check')} - detects type errors and unused code`,
-              short: 'TypeScript',
-              value: 'typescript'
-            },
-            {
-              checked: incompleteChecks.size > 0 ? incompleteChecks.has('prettier') : false,
-              name: `${bold('Formatting')} - runs Prettier`,
-              short: 'Formatter',
-              value: 'prettier'
-            }
-          ].filter(Boolean)
+      const checkChoices = [
+        usesYarn(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
+          name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
+          short: 'Integrity',
+          value: 'integrity'
+        },
+        usesYarn(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('duplicates') : true,
+          name: `${bold(
+            'Dependency duplicates check'
+          )} - ensures no unnecessary dependency duplicates`,
+          short: 'Duplicates',
+          value: 'duplicates'
+        },
+        usesNpm(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('integrity') : true,
+          name: `${bold('Integrity')} - ensures that dependencies are installed properly`,
+          short: 'Integrity',
+          value: 'integrity'
+        },
+        usesNpm(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('duplicates') : true,
+          name: `${bold(
+            'Dependency duplicates check'
+          )} - ensures no unnecessary dependency duplicates`,
+          short: 'Duplicates',
+          value: 'duplicates'
+        },
+        usesNpm(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('audit') : true,
+          name: `${bold('Packages audit')} - ensures all packages are up to date`,
+          short: 'Audit',
+          value: 'audit'
         },
         {
-          type: 'confirm',
-          name: 'autoFix',
-          message: 'Do you want to auto-fix any issues if possible?',
-          default: false,
-          when: ({ requiredChecks }) =>
-            requiredChecks.includes('eslint') ||
-            requiredChecks.includes('duplicates') ||
-            requiredChecks.includes('audit')
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('eslint') : true,
+          name: `${bold('Linter')} - runs ESLint`,
+          short: 'Linter',
+          value: 'eslint'
+        },
+        containsTypeScript(context) && {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('typescript') : true,
+          name: `${bold('TypeScript check')} - detects type errors and unused code`,
+          short: 'TypeScript',
+          value: 'typescript'
+        },
+        {
+          checked: incompleteChecks.size > 0 ? incompleteChecks.has('prettier') : false,
+          name: `${bold('Formatting')} - runs Prettier`,
+          short: 'Formatter',
+          value: 'prettier'
         }
-      ]);
+      ].filter(
+        (choice): choice is { checked: boolean; name: string; short: string; value: string } =>
+          Boolean(choice)
+      );
 
-      if ((await context.git.hasChanges()) && (autoFix || requiredChecks.includes('prettier'))) {
+      const { requiredChecks, autoFix } = cmd?.yes
+        ? {
+            requiredChecks: checkChoices
+              .filter(({ checked }) => checked)
+              .map(({ value }) => value as string),
+            autoFix: false
+          }
+        : await inquirer.prompt([
+            {
+              type: 'checkbox',
+              name: 'requiredChecks',
+              message: 'Select checkup operations:',
+              choices: checkChoices
+            },
+            {
+              type: 'confirm',
+              name: 'autoFix',
+              message: 'Do you want to auto-fix any issues if possible?',
+              default: false,
+              when: ({ requiredChecks }) =>
+                requiredChecks.includes('eslint') ||
+                requiredChecks.includes('duplicates') ||
+                requiredChecks.includes('audit')
+            }
+          ]);
+
+      if (
+        !cmd?.yes &&
+        (await context.git.hasChanges()) &&
+        (autoFix || requiredChecks.includes('prettier'))
+      ) {
         const { shouldRun } = await inquirer.prompt([
           {
             type: 'confirm',

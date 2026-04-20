@@ -1,3 +1,7 @@
+# 1.1.4
+
+- feat: add `-y` flag to `checkup` command for non-interactive execution with default options
+
 # 1.1.3
 
 - feat: support workspaces with variable directory structure
